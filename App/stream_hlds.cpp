@@ -1,9 +1,7 @@
 #include "stream_hlds.h"
 #include <iostream>
 
-
 using namespace cv;
-
 stream_hlds::stream_hlds()
 {
     m_jpg_compressor = tjInitCompress();

@@ -1,6 +1,12 @@
 #pragma once 
+
+#include <deque>
+#include <unordered_map>
+#include <mutex>
 #include "xthread.h"
+#include "tof.h"
 #include "hlds_agent.h"
+
 class agent_manager : public xthread
 {
     public:
@@ -8,8 +14,15 @@ class agent_manager : public xthread
         virtual ~agent_manager();
     private:
         int m_index;
+        
+        TofManager *m_tofm = nullptr;
         virtual int Proc();
-        hlds_agent agent;
-        hlds_agent agent1;
-        hlds_agent agent2;
+        
+        //comm
+        mutex m_agents_lock;
+        deque<hlds_agent*> m_hlds_agents;
+        void AddHldsAgent();
+        void DelHldsAgent();
+        void SaveIniFile();
+        void InitManager();
 };

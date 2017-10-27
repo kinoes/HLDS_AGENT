@@ -4,7 +4,6 @@
 #include <deque>
 #include <boost/asio.hpp>
 
-
 using boost::asio::ip::tcp;
 class accept_manager : public xthread
 {

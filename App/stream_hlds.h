@@ -3,6 +3,7 @@
 #include "xthread.h"
 #include <opencv2/opencv.hpp>
 #include <turbojpeg.h>
+using namespace std;
 
 class stream_hlds : public xthread
 {

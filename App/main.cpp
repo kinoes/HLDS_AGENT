@@ -1,9 +1,39 @@
 #include<iostream>
+#include <chrono>
+#include <thread>
+#include <tuple>
+
 #include "xthread.h"
 #include "agent_manager.h"
-#include "hlds_agent.h"
 #include "event_manager.h"
 #include "accept_manager.h"
+#include "xpacket.h"
+#include "config.h"
+#include "gmark.h"
+#include "logger.h"
+
+
+Config *config;
+GMarket gmarket;
+LogMgrC *zetavulog;
+DebugLogger *dbglog;
+
+using namespace std;
+
+
+/////////////////////////////////////////////////////////////////////////
+// Name : initconfig
+// Function : INIT CONFIG
+/////////////////////////////////////////////////////////////////////////
+void initconfig()
+{
+}
+
+void initlog(const char *procname)
+{
+
+}
+
 
 int main(int argc, char** argv)
 {
