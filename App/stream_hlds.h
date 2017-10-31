@@ -16,7 +16,6 @@ private:
 
     int m_camera_type = 0;
     uint8_t* m_jpg_buf;
-    uint32_t m_last_hlds_img_index = 0;
 };
 
 

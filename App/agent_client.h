@@ -2,10 +2,12 @@
 
 #include "xthread.h"
 #include "xpacket.h"
+#include "command.h"
 #include <thread>
 #include <utility>
 #include <deque>
 #include <boost/asio.hpp>
+
 #define SAFE_DELETE(x) { if(x != nullptr) { delete x; x = nullptr;} }
 
 using namespace std;
@@ -49,9 +51,7 @@ class agent_client : public xthread
         mutex  m_send_q_lock;
         deque<xpacket*> m_send_q;
 
-
-
-        
+		uint8_t stream_onoff = 0; //default OFF
         chrono::time_point<chrono::system_clock> m_start_time;
         chrono::time_point<chrono::system_clock> m_end_time;
         chrono::duration<double> m_el_sec;
@@ -62,7 +62,5 @@ class agent_client : public xthread
         uint8_t m_recv_buf[RECV_BUF_LEN], m_msg_buf[RECV_BUF_LEN];
         size_t  m_msg_buf_pos = 0;
         xpacket *m_making_packet = nullptr;
-
-
 };
 

@@ -12,13 +12,14 @@ hlds_agent::hlds_agent()
     m_dx = 600.0f;                  //Shift length to x-axis positive direction(mm)
     m_dy = 900.0f;                  //Shift length to y-axis positive direction(mm)
     m_zoom = 0.12f;                 //Zoom ratio
-    m_bPoint = true;                 //Mode to display points
-    m_bBack = false;                 //Mode to display footprint on background
-    m_bCount = true;                 //Mode to display human count
-    m_bBoxShift = true;              //true: shift, false: change size in count area setting mode
-    m_bSubDisplay = true;            //Mode to display sub display
+    m_bPoint = true;                //Mode to display points
+    m_bBack = true;                //Mode to display footprint on background
+    m_bCount = true;                //Mode to display human count
+    m_bBoxShift = true;             //true: shift, false: change size in count area setting mode
+    m_bSubDisplay = true;           //Mode to display sub display
     m_apphumanid = 0;
-    m_Tof = new Tof;  
+    m_stream_status = 1;			//STREAM OFF DEFAULT
+	m_Tof = new Tof;  
     InitAgent();
 }
 
@@ -170,7 +171,7 @@ int hlds_agent::InitAgent()
     //Initialize human information
     InitializeHumans();
     //Initialize background
-     m_back = Mat::zeros(480 * 2, 640 * 2, CV_8UC3);
+    m_back = Mat::zeros(240 * 2, 320 * 2, CV_8UC3);
   
     return 0;
 }
@@ -253,22 +254,35 @@ void hlds_agent::CatchHumans(FrameHumans *pframehumans)
 
 int hlds_agent::Proc()
 {
-    long frameno;
-    TimeStamp timestamp;
-    m_Tof->GetFrameStatus(&frameno, &timestamp);
+	long frameno;
+	TimeStamp timestamp;
+	m_Tof->GetFrameStatus(&frameno, &timestamp);
 
-    if (frameno != m_frame.framenumber){
-        //Read a new frame only if frame number is changed(Old data is shown if it is not changed.)
-        //Read a frame of humans data
-        Result ret = Result::OK;
-        ret = m_Tof->ReadFrame(&m_framehumans);
-        if (ret != Result::OK) {
-            std::cout << "read frame error" << endl;
-            return 0;
-        }
-        //Catch detected humans
-        CatchHumans(&m_framehumans);
-    }    
-    return 0;
+	if (frameno != m_frame.framenumber){
+		//Read a new frame only if frame number is changed(Old data is shown if it is not changed.)
+		//Read a frame of humans data
+		Result ret = Result::OK;
+		ret = m_Tof->ReadFrame(&m_framehumans);
+		if (ret != Result::OK) {
+			std::cout << "read frame error" << endl;
+			return 0;
+		}
+
+		if (m_bBack){
+			m_img = m_back.clone();
+		}
+		else {
+			m_img = Mat::zeros(240 * 2, 320 * 2, CV_8UC3);
+		}
+		//Catch detected humans
+		CatchHumans(&m_framehumans);
+		if(m_stream_status == STREAM_ON) 
+		{
+			Mat* hlds_img = new Mat();
+			*hlds_img = m_img;
+			((agent_broker*)m_arg)->UpdateHLDSImage(hlds_img, true);
+		}
+	}    
+	return 0;
 }
 

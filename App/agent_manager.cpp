@@ -29,7 +29,7 @@ void agent_manager::AddHldsAgent()
     m_agents_lock.lock();
     hlds_agent* new_agent = new hlds_agent();
     m_hlds_agents.push_back(new_agent);
-    new_agent->SetCPS(1);
+    new_agent->SetCPS(15);
     new_agent->SetThreadCount(m_index);
     new_agent->Start(this);
     m_agents_lock.unlock();

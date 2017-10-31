@@ -7,6 +7,7 @@
 
 #include "xthread.h"
 #include "tof.h"
+#include "agent_broker.h"
 
 #define MAX_TRACKS              (100)           //Max points in a track
 #define COUNT_NO    (-1)    //Not counted
@@ -75,8 +76,11 @@ class hlds_agent : public xthread
         void SetThreadCount(int index);
         Tof* GetTofInstance() { return m_Tof; }
     private:
-        int m_index;
-        float m_angle_x;              //Angle to rotate around X-axis(degree)
+        mutex  m_agent_lock;
+
+		int m_index;
+        int m_stream_status;			// 0 : off  1: on
+		float m_angle_x;              //Angle to rotate around X-axis(degree)
         float m_angle_y;               //Angle to rotate around Y-axis(degree)
         float m_angle_z;               //Angle to rotate around Z-axis(degree)
         float m_height;             //Height from floor(mm)
@@ -101,12 +105,16 @@ class hlds_agent : public xthread
         vector<AppHuman> m_apphumans;
         int m_apphumanid;
 
-        //Display image
-        Mat m_img;
-        //Background image
-        Mat m_back;
+		//Display image
+		Mat m_img;
 
-        bool LoadIniFile(void);
+		//Background image
+		Mat m_back;
+
+		//Z-buffer(to understand before and behind)
+		float m_z_buffer[640 * 2][480 * 2];
+
+		bool LoadIniFile(void);
         void CatchHumans(FrameHumans *pframehumans);
         bool ChangeAttribute(Tof* tof, float x, float y, float z, float rx, float ry, float rz);
         void InitializeHumans(void);

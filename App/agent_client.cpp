@@ -1,4 +1,6 @@
 #include "agent_client.h"
+#include "agent_broker.h"
+#include "command.h"
 #include <iostream>
 #include <inttypes.h>
 
@@ -110,15 +112,75 @@ void agent_client::ComPacketProc()
 {
     while(m_compacket_thread_stop_flag == false)
     {
-    }
+		xpacket* recv_packet = PopRecvPacket();
+		uint8_t command_code = recv_packet->m_header.h_command;
+			if(command_code == OP_HLDS_STREAM)
+			{
+				 ((agent_broker*)m_arg)->SetStreamStatus(recv_packet);
+			}
+			else if(command_code == OP_HLDS_DEVICE_INFO)
+			{
+				((agent_broker*)m_arg)->SetDeviceInfo(recv_packet);
+			}
+			else if(command_code == OP_STREAM_FRAME_SET)
+			{
+				 ((agent_broker*)m_arg)->SetFrame(recv_packet);
+			}
+			else if(command_code == OP_CONFIG_SET)
+			{
+				  ((agent_broker*)m_arg)->SetConfig(recv_packet);
+			}
+			else if(command_code == OP_PANTILT_COMMAND)
+			{
+				  ((agent_broker*)m_arg)->SetPantiltData(recv_packet);
+			}
+			else if(command_code == OP_LENS_MOVE)
+			{
+				  ((agent_broker*)m_arg)->SetFocusInOut(recv_packet);
+			}
+	}
 }
-
 
 void agent_client::SendProc()
 {
-    while (m_send_thread_stop_flag == false)
-    {
-    }
+	while (m_send_thread_stop_flag == false)
+	{
+		xpacket* send_packet = PopSendPacket();
+		if (send_packet == nullptr)
+		{
+			this_thread::sleep_for(chrono::milliseconds(10));
+			continue;
+		}
+
+		if(stream_onoff == STREAM_OFF)
+		{
+			if(send_packet->m_header.h_command == OP_HLDS_STREAM)
+			{
+				continue;
+			}
+		}
+		bool _error = false;
+		m_socket_lock.lock();
+		if (m_socket != nullptr)
+		{
+			try
+			{
+				boost::asio::write(*m_socket, boost::asio::buffer(send_packet->GetBuf(), send_packet->GetTotalPackSize()));
+			}
+			catch (const std::exception&)
+			{
+				_error = true;
+			}
+		}
+		else
+			_error = true;
+
+		m_socket_lock.unlock();
+		delete send_packet;
+
+		if (_error == true)
+			break;
+	}
 }
 
 int agent_client::Proc()

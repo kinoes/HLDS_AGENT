@@ -22,22 +22,29 @@ accept_manager::~accept_manager()
 
 int accept_manager::Proc()
 {
-    tcp::socket *sock = new boost::asio::ip::tcp::socket(m_io_service);
-    boost::asio::ip::tcp::no_delay option(true);
-    boost::system::error_code ec;
-    sock->set_option(option, ec);
-    if (ec)
-    {
-    }
-    m_acceptor->accept(*sock);
-    if(m_test<3)
-    {
-    agent_client* new_client = new agent_client(sock);
-    //((zetavu*)m_arg)->AddClient(new_client);
-    cout<<"NEW CLINET CONNECT"<<endl;
-    }
-    m_test++; //for test 
-    return 0;
+	tcp::socket *sock = new boost::asio::ip::tcp::socket(m_io_service);
+	boost::asio::ip::tcp::no_delay option(true);
+	boost::system::error_code ec;
+	sock->set_option(option, ec);
+	if (ec)
+	{
+	}
+	m_acceptor->accept(*sock);
+	if(m_test<3) //for modifty database count 
+	{
+		agent_client* new_client = new agent_client(sock);
+		//((zetavu*)m_arg)->AddClient(new_client);
+		cout<<"NEW CLINET CONNECT"<<endl;
+		m_test++; //for test 
+	}
+	else
+	{
+		sock->close();
+		delete sock;
+		cout<< "NEW CLIENT CONNECT MAX COUNT IS OVER" <<endl;
+		m_test--; //for test 
+	}
+	return 0;
 }
 
 
