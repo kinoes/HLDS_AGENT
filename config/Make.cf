@@ -1,0 +1,32 @@
+OPENCV_INC_PATH = -I/usr/include/opencv
+OPENCV_LIB_PATH = -L/usr/lib64
+BOOST_INCLUDES = -I/usr/include/boost
+BOOST_LD_FLAGS  = -lboost_thread -lboost_system -lboost_locale
+
+ISAVER_INC_PATH = -I/home/sioc/HD_Project/include
+ISAVER_LIB_PATH = -L/usr/lib -lturbojpeg 
+ISAVER_BIN_PATH = /home/sioc//HD_Project/bin
+
+HLDS_LIB_PATH = -L/usr/lib/hldstof -ltof
+
+COMMON_INCLUDES = -I/usr/include
+COMMON_LIB_PATH = -L/usr/lib64 
+
+SQLITE3_LD_FLAGS = -L/home/sioc//HD_Projec/lib -lcppsqlite3 -ldl -lsqlite3
+ISAVER_LIB_BIN = -L/home/sioc//HD_Projec/lib 
+
+
+AR          = /bin/ar rscv
+RM          = /bin/rm -f
+CP          = /bin/cp -f
+TOUCH       = /bin/touch
+CC          = ccache g++
+C           = /usr/bin/cc
+
+CFLAGS+=`pkg-config --cflags opencv`
+LDFLAGS+=`pkg-config --libs opencv`
+
+INSTALL     = /usr/bin/install -c
+AR          = /usr/bin/ar -rcv
+RM          = /bin/rm -f
+
