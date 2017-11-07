@@ -31,6 +31,7 @@ class agent_broker : public xthread
 		void SetFocusInOut(xpacket *recv);
 		void SetDeviceInfo(xpacket* recv);
 		void InitStatusRes();
+		void AddClient(agent_client* client);
 
 		const static int DEFAULT_MAX_PACKET_UNIT_SIZE = 1024;
 		const static int STREAM_IMG_WIDTH = 320;
@@ -41,7 +42,7 @@ class agent_broker : public xthread
 		virtual int Proc();
 		
 		//comm
-		mutex m_clients_lock;
+		mutex m_agent_clients_lock;
 		mutex m_img_set_lock; //img_set components : lpr_img & context_img
 		Mat* m_cur_hlds_img = nullptr;
 };

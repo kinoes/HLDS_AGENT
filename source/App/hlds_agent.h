@@ -24,12 +24,28 @@
 #define SUB_DISPLAY_WIDTH       (320)           //Width of sub display
 #define SUB_DISPLAY_HEIGHT      (240)           //Height of sub display
 
+
+
+//Parameter to display human
+#define HUMAN_CURSOR_SIZE       (600.0f)        //Size of human cursor(Length of one side from L to L)
+#define MAX_TRACKS              (100)           //Max points in a track
+//
+//Hand height display
+#define HAND_INDICATOR_MIN      (0)             //min.
+#define HAND_INDICATOR_MAX      (2000)          //max.
+
+#if defined (_WIN64) || defined(_WIN32)
+#define M_PI (3.14159265358979) //Pi
+#endif
+#define deg2rad(d) ( (d) / 180.0 * M_PI )   //Macro function to convert deg to rad
+
+
 using namespace std;
 using namespace hlds;
 using namespace cv;
 
 //Human count
-struct {
+/*struct {
     int Enter[4];           //Human count who enter to the area from each direction(Use COUNT_XXX macro)
     int Exit[4];            //Human count who exit from the area to each direction(Use COUNT_XXX macro)
     int TotalEnter;         //Total number of humans entering
@@ -44,6 +60,7 @@ struct {
         float bottom_y;
     } Square;
 } Count;
+*/
 
 //Human information
 struct AppHuman {
@@ -125,5 +142,10 @@ class hlds_agent : public xthread
         void CatchHumans(FrameHumans *pframehumans);
         bool ChangeAttribute(Tof* tof, float x, float y, float z, float rx, float ry, float rz);
         void InitializeHumans(void);
-        virtual int Proc();
+		void DrawHumans(void);
+		void CountHumans(void);
+		int CountDirection(float x, float y);
+		bool InCountArea(float x, float y);
+		void DrawCount();
+		virtual int Proc();
 };

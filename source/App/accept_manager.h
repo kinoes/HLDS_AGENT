@@ -18,7 +18,8 @@ class accept_manager : public xthread
         int m_test;
     private:
         virtual int Proc();
-        unsigned short m_port = DEFAULT_PORT;
+        bool AuthConnect(tcp::socket* _socket);
+		unsigned short m_port = DEFAULT_PORT;
         boost::asio::io_service m_io_service;
         tcp::acceptor *m_acceptor;
         mutex m_socket_lock;

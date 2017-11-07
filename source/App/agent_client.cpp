@@ -113,6 +113,13 @@ void agent_client::ComPacketProc()
     while(m_compacket_thread_stop_flag == false)
     {
 		xpacket* recv_packet = PopRecvPacket();
+		
+		if (recv_packet == nullptr)
+		{
+			this_thread::sleep_for(chrono::milliseconds(10));
+			continue;
+		}
+		
 		uint8_t command_code = recv_packet->m_header.h_command;
 			if(command_code == OP_HLDS_STREAM)
 			{
@@ -138,6 +145,10 @@ void agent_client::ComPacketProc()
 			{
 				  ((agent_broker*)m_arg)->SetFocusInOut(recv_packet);
 			}
+			else
+			{
+				cout<<"NOT COMMAND \n"<<endl;
+			}
 	}
 }
 
@@ -154,6 +165,7 @@ void agent_client::SendProc()
 
 		if(stream_onoff == STREAM_OFF)
 		{
+			printf("STREAM_OFF\n");
 			if(send_packet->m_header.h_command == OP_HLDS_STREAM)
 			{
 				continue;
@@ -185,7 +197,7 @@ void agent_client::SendProc()
 
 int agent_client::Proc()
 {
-    size_t bytesReceived;
+	size_t bytesReceived;
     boost::system::error_code error;
     bool _error = false;
     try
@@ -197,8 +209,8 @@ int agent_client::Proc()
                 m_prefix_buf.pop_front();
             }
 
-            bytesReceived = boost::asio::read(*m_socket, boost::asio::buffer(m_recv_buf, 1));
-            m_prefix_buf.push_back(m_recv_buf[0]);
+			bytesReceived = boost::asio::read(*m_socket, boost::asio::buffer(m_recv_buf, 1));
+			m_prefix_buf.push_back(m_recv_buf[0]);
             if ((int)m_prefix_buf.size() == xpacket::PREFIX_SIZE)
             {
                 if (m_prefix_buf[0] == 'R' && m_prefix_buf[1] == 'X' && m_prefix_buf[2] == 'M' && m_prefix_buf[3] == 'G')//found

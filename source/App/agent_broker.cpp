@@ -17,6 +17,14 @@ agent_broker::~agent_broker()
 	}
 }
 
+void agent_broker::AddClient(agent_client* client)
+{
+	m_agent_clients_lock.lock();
+	m_clients.push_back(client);
+	client->Start(this);
+	m_agent_clients_lock.unlock();
+}
+
 
 void agent_broker::SetStreamStatus(xpacket* packet)
 {       
@@ -115,7 +123,7 @@ void agent_broker::StreamHLDSClients(uint8_t* jpg_data, uint32_t jpg_len)
 	vector<xpacket*> slices;
 	xpacket::Split(&stream_packet, slices, DEFAULT_MAX_PACKET_UNIT_SIZE);
 
-	m_clients_lock.lock();
+	m_agent_clients_lock.lock();
 	for (int i = 0; i < (int)m_clients.size(); i++)
 	{
 		if (m_clients[i]->IsStopped() == true)
@@ -124,7 +132,7 @@ void agent_broker::StreamHLDSClients(uint8_t* jpg_data, uint32_t jpg_len)
 		for (int k = 0; k < (int)slices.size(); k++)
 			m_clients[i]->PushSendPacket(slices[k]);
 	}
-	m_clients_lock.unlock();
+	m_agent_clients_lock.unlock();
 	
 	for (int k = 0; k < (int)slices.size(); k++)
 	{

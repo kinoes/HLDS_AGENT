@@ -51,7 +51,7 @@ class agent_client : public xthread
         mutex  m_send_q_lock;
         deque<xpacket*> m_send_q;
 
-		uint8_t stream_onoff = 0; //default OFF
+		uint8_t stream_onoff = 1; //default OFF
         chrono::time_point<chrono::system_clock> m_start_time;
         chrono::time_point<chrono::system_clock> m_end_time;
         chrono::duration<double> m_el_sec;

@@ -62,12 +62,10 @@ void agent_manager::SaveIniFile()
 
 int agent_manager::Proc()
 {
-    // to do read db_thread count //
-    // if(bg_count != cur_count ) 
-    // if(> ADD AddHldsAgent
-    // else < DEL DelHldsAgent
-    
-    if(m_index < 2)
+   // to do get command ADD or DELETE 
+   // to do get device info 
+	
+    if(m_index < 1)
     {
         AddHldsAgent();
     }

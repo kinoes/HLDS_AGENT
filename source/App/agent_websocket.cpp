@@ -70,7 +70,7 @@ int agent_websocket::Proc()
 	else if(packet->m_header.h_command == OP_HLDS_DEVICE_INFO)
 	{
 	}
-	else if(packet->m_header.h_command == OP_STREAM_FRAME_SET)
+	else if(packet->m_header.h_command == OP_HLDS_STREAM)
 	{
 	}
 
@@ -78,7 +78,7 @@ int agent_websocket::Proc()
 	{
 	}
 
-	else if(packet->m_header.h_command == OP_PANTILT_COMMAND)
+	else if(packet->m_header.h_command == OP_FOCUS_MOVE)
 	{
 	}
 	else if(packet->m_header.h_command == OP_LENS_MOVE)
@@ -182,7 +182,7 @@ void agent_websocket::on_message(connection_hdl hdl, web_server::message_ptr msg
 	}
 	else if (root["command"] == "OP_STREAM_FRAME")
 	{
-		recv_packet->m_header.h_command = OP_STREAM_FRAME_SET;
+		recv_packet->m_header.h_command = OP_HLDS_STREAM;
 		sub_command = (uint8_t)root["sub_command"].asInt();
 		recv_packet->PushByte(sub_command);
 		switch(sub_command)
@@ -224,7 +224,7 @@ void agent_websocket::on_message(connection_hdl hdl, web_server::message_ptr msg
 	}
 	else if (root["command"] == "OP_LENS_MOVE")
 	{
-		recv_packet->m_header.h_command = OP_PANTILT_COMMAND;
+		recv_packet->m_header.h_command = OP_LENS_MOVE;
 		sub_command = (uint8_t)root["sub_command"].asInt();
 		recv_packet->PushByte(sub_command);
 		switch(sub_command)
