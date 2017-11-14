@@ -7,7 +7,7 @@
 
 #include "xthread.h"
 #include "tof.h"
-#include "agent_broker.h"
+#include "send_packet.h"
 
 #define MAX_TRACKS              (100)           //Max points in a track
 #define COUNT_NO    (-1)    //Not counted
@@ -40,12 +40,14 @@
 #define deg2rad(d) ( (d) / 180.0 * M_PI )   //Macro function to convert deg to rad
 
 
+
 using namespace std;
 using namespace hlds;
 using namespace cv;
 
 //Human count
-/*struct {
+
+struct Count{
     int Enter[4];           //Human count who enter to the area from each direction(Use COUNT_XXX macro)
     int Exit[4];            //Human count who exit from the area to each direction(Use COUNT_XXX macro)
     int TotalEnter;         //Total number of humans entering
@@ -59,8 +61,8 @@ using namespace cv;
         float right_x;
         float bottom_y;
     } Square;
-} Count;
-*/
+};
+
 
 //Human information
 struct AppHuman {
@@ -91,19 +93,35 @@ struct AppHuman {
 };
 
 
+typedef struct __TofEvent {
+	char	wszIp[20];				//tof ip
+	int		inout;					//피플카운트 입(1)출(2)확인/위험구역 출입(2)해제(3) 확인
+	time_t  time;				    //이벤트 감지 시간
+	char	wszDeviceID[10];		//장치 ID
+	char	wszAreaID[10];			//구역 ID
+	char	wszAreaName[256];	//구역명
+	int		direction;
+}TofEvent, *PTofEvent;
+
+
 class hlds_agent : public xthread
 {
     public:
         hlds_agent();
-        virtual ~hlds_agent();
+		void SetDeviceInfo(DEVICEINFO device);	
+		virtual ~hlds_agent();
         int InitAgent();
         void SetThreadCount(int index);
         Tof* GetTofInstance() { return m_Tof; }
-    private:
+		TofInfo GETTofInfo(){return m_TofInfo;}
+		bool CompareDeviceInfo(DEVICEINFO data);
+		void SetRunFlag(bool flag);
+		bool GetRunFlag(){return m_agent_run_flag;}
+	private:
         mutex  m_agent_lock;
-
+		int m_agent_run_flag;
 		int m_index;
-        int m_stream_status;			// 0 : off  1: on
+        uint8_t m_stream_status;			// 0 : off  1: on
 		float m_angle_x;              //Angle to rotate around X-axis(degree)
         float m_angle_y;               //Angle to rotate around Y-axis(degree)
         float m_angle_z;               //Angle to rotate around Z-axis(degree)
@@ -116,9 +134,10 @@ class hlds_agent : public xthread
         bool m_bCount;                 //Mode to display human count
         bool m_bBoxShift;              //true: shift, false: change size in count area setting mode
         bool m_bSubDisplay;            //Mode to display sub display
-
+		Count m_Count;
+		bool thread_flag;
         Tof *m_Tof = nullptr;
-        TofInfo testm_TofInfo;
+        TofInfo m_TofInfo;
         
         //Create instances for reading frames
         FrameDepth m_frame;
@@ -131,13 +150,13 @@ class hlds_agent : public xthread
 
 		//Display image
 		Mat m_img;
-
 		//Background image
 		Mat m_back;
-
+		Mat m_subdisplay;
 		//Z-buffer(to understand before and behind)
 		float m_z_buffer[640 * 2][480 * 2];
-
+		DEVICEINFO m_deviceinfo;
+		void StatusInfo();
 		bool LoadIniFile(void);
         void CatchHumans(FrameHumans *pframehumans);
         bool ChangeAttribute(Tof* tof, float x, float y, float z, float rx, float ry, float rz);

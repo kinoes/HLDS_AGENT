@@ -14,7 +14,6 @@ class accept_manager : public xthread
 
         const static unsigned short DEFAULT_PORT = 6885;
         const static int RECV_BUF_LEN = 256;
-        
         int m_test;
     private:
         virtual int Proc();

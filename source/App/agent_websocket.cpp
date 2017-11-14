@@ -115,6 +115,7 @@ void agent_websocket::run_thread()
 			m_webserver.stop();
 			continue;
 		}
+		usleep(100);
 	}
 }
 
@@ -202,21 +203,13 @@ void agent_websocket::on_message(connection_hdl hdl, web_server::message_ptr msg
 		recv_packet->PushByte(sub_command);
 		switch(sub_command)
 		{
-			case SET_IP_INFO :
+			case SET_HLDS_FRAME:
 				break;
-			case	GET_IP_INFO :
+			case GET_HLDS_FRAME:
 				break;
-			case SET_MAC_INFO:
+			case SET_HLDS_PIXEL:
 				break;
-			case GET_MAC_INFO:
-				break;
-			case SET_DEVICE_ID:
-				break;
-			case GET_DEVICE_ID:
-				break;
-			case SET_AREA_INFO:
-				break;
-			case GET_AREA_INFO:
+			case GET_HLDS_PIXEL:
 				break;
 			default:
 				break;

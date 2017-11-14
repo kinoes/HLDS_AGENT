@@ -8,7 +8,7 @@ OBJS=$(patsubst %.cpp, %.o,$(SOURCES))
 TARGET = HLDS_AGENT
 INSTALL = /usr/bin/install -c
 
-USING_LIBS = -lpthread  -lopencv_core -lopencv_highgui -lturbojpeg -lxpacket -lxthread -lrt -lcommon -lboost_system -lboost_thread -lboost_locale
+USING_LIBS = -lpthread  -lopencv_core -lopencv_highgui -lxpacket -lxthread -lrt -lcommon -lboost_system -lboost_thread -lboost_locale
 
 CFLAGS    =-std=c++11  -O1 -Wall -Wno-deprecated -D _HUMAN_COLOR -D  _LINUX_COMPILE -Wno-unknown-pragmas -Wno-literal-suffix -Wno-switch-enum -Wno-delete-non-virtual-dtor -Wno-switch -Wno-unused-variable
 

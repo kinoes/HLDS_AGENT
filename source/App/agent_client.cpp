@@ -12,7 +12,8 @@ agent_client::agent_client(tcp::socket* _socket)
     m_socket_lock.unlock();
     m_send_thread = thread(&agent_client::SendProc, this);
     m_compacket_thread = thread(&agent_client::ComPacketProc, this);
- //   m_alivecheck_mode = gmarket.alivecheck_mode;
+   // m_alivecheck_mode = gmarket.alivecheck_mode;
+	m_alivecheck_mode = 1; // modo 1: ON   2: OFF
 }
 
 agent_client::~agent_client()
@@ -119,36 +120,67 @@ void agent_client::ComPacketProc()
 			this_thread::sleep_for(chrono::milliseconds(10));
 			continue;
 		}
-		
 		uint8_t command_code = recv_packet->m_header.h_command;
-			if(command_code == OP_HLDS_STREAM)
-			{
-				 ((agent_broker*)m_arg)->SetStreamStatus(recv_packet);
-			}
-			else if(command_code == OP_HLDS_DEVICE_INFO)
-			{
-				((agent_broker*)m_arg)->SetDeviceInfo(recv_packet);
-			}
-			else if(command_code == OP_STREAM_FRAME)
-			{
-				 ((agent_broker*)m_arg)->SetFrame(recv_packet);
-			}
-			else if(command_code == OP_CONFIG_SET)
-			{
-				  ((agent_broker*)m_arg)->SetConfig(recv_packet);
-			}
-			else if(command_code == OP_LENS_MOVE)
-			{
-				  ((agent_broker*)m_arg)->SetPantiltData(recv_packet);
-			}
-			else if(command_code == OP_FOCUS_MOVE)
-			{
-				  ((agent_broker*)m_arg)->SetFocusInOut(recv_packet);
-			}
-			else
-			{
-				cout<<"NOT COMMAND \n"<<endl;
-			}
+		xpacket command_packet;
+
+		printf("%02x", command_code);
+		printf("OP_START_SET\n");
+
+		if(command_code == OP_HLDS_STREAM)
+		{
+		}
+		else if(command_code == OP_HLDS_DEVICE_INFO)
+		{
+			((agent_broker*)m_arg)->SetDeviceInfo(recv_packet);
+		}
+		else if(command_code == OP_STREAM_FRAME)
+		{
+			((agent_broker*)m_arg)->SetFrame(recv_packet);
+		}
+		else if(command_code == OP_CONFIG_SET)
+		{
+			((agent_broker*)m_arg)->SetConfig(recv_packet);
+		}
+		else if(command_code == OP_LENS_MOVE)
+		{
+			((agent_broker*)m_arg)->SetPantiltData(recv_packet);
+		}
+		else if(command_code == OP_INIT_STATUS_REQ)
+		{
+			 ((agent_broker*)m_arg)->GetAgentStatus(recv_packet);
+		}
+		else if(command_code == OP_FOCUS_MOVE)
+		{
+			((agent_broker*)m_arg)->SetFocusInOut(recv_packet);
+		}
+		else if(command_code == OP_STREAM_ONOFF)
+		{
+			((agent_broker*)m_arg)->SetStreamStatus(recv_packet);
+		}
+		else if(command_code == OP_DEVICE_CHECK)
+		{
+			printf("OP_DEVICE_CHECK\n");
+			((agent_broker*)m_arg)->SetDeviceCheck(recv_packet);
+		}
+		else if(command_code == OP_DEVICE_MANAGE)
+		{
+			printf("SET_DEVICE_MANAGE\n");
+			((agent_broker*)m_arg)->ManageDeviceAddDel(recv_packet);
+		}
+		else if(command_code == OP_CAMERA_ANGLE) 
+		{
+			 printf("OP_CAMERA_ANGLE_SET\n");
+			((agent_broker*)m_arg)->SetCameraAngle(recv_packet);
+		}
+		else if(command_code == OP_ETC_CONFIG_SET)
+		{
+			printf("OP_ETC_CONFIG_SET\n");
+			((agent_broker*)m_arg)->SetEtcConfigSet(recv_packet);
+		}
+		else
+		{
+			cout<<"NOT COMMAND \n"<<endl;
+		}
 	}
 }
 

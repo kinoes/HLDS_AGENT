@@ -32,32 +32,9 @@ int accept_manager::Proc()
 	{
 	}
 	m_acceptor->accept(*sock);
-	bool auth = AuthConnect(sock);
-
-	printf("STATUS SUCCESS\n");
-	/*if(m_test<3) //for modifty database count 
-	{
-		
-		printf("COUNT %d\n" , m_test);
-
-		agent_client* new_client = new agent_client(sock);
-		((agent_broker*)m_arg)->AddClient(new_client);
-		cout<<"NEW CLINET CONNECT"<<endl;
-		m_test++; //for test 
-	}
-	else
-	{
-		sock->close();
-		delete sock;
-		cout<< "NEW CLIENT CONNECT MAX COUNT IS OVER" <<endl;
-		m_test--; //for test 
-	}*/
-
-
+	bool auth = true;
 	if(auth == true)
 	{
-		printf("COUNT %d\n" , m_test);
-
 		agent_client* new_client = new agent_client(sock);
 		((agent_broker*)m_arg)->AddClient(new_client);
 		cout<<"NEW CLINET CONNECT\n"<<endl;

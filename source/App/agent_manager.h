@@ -15,17 +15,15 @@ class agent_manager : public xthread
         virtual ~agent_manager();
 		void SetBrokerController(agent_broker* broker_controller) { m_broker_controller = broker_controller;} 
     private:
-        int m_index;
         
-        TofManager *m_tofm = nullptr;
-        agent_broker* m_broker_controller = nullptr;
+		uint8_t m_manage_status;        
+        bool m_device_info_status;
+		TofManager *m_tofm = nullptr;
+		agent_broker* m_broker_controller = nullptr;
 		virtual int Proc();
-        
-        //comm
+		DEVICEINFO m_device_info; 
+		//comm
         mutex m_agents_lock;
         deque<hlds_agent*> m_hlds_agents;
-        void AddHldsAgent();
-        void DelHldsAgent();
-        void SaveIniFile();
         void InitManager();
 };

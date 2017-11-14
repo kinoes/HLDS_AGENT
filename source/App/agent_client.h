@@ -3,6 +3,7 @@
 #include "xthread.h"
 #include "xpacket.h"
 #include "command.h"
+
 #include <thread>
 #include <utility>
 #include <deque>
@@ -60,7 +61,8 @@ class agent_client : public xthread
         int m_recv_step = 0;
         deque<uint8_t> m_prefix_buf;
         uint8_t m_recv_buf[RECV_BUF_LEN], m_msg_buf[RECV_BUF_LEN];
-        size_t  m_msg_buf_pos = 0;
-        xpacket *m_making_packet = nullptr;
+		size_t  m_msg_buf_pos = 0;
+		xpacket *m_making_packet = nullptr;
+		uint8_t m_alivecheck_mode;
 };
 

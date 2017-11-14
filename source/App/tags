@@ -5,13 +5,15 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
 ALIGNAS	jsoncpp.cpp	2384;"	d	file:
-AddHldsAgent	agent_manager.cpp	/^void agent_manager::AddHldsAgent()$/;"	f	class:agent_manager
+AddAgent	agent_broker.cpp	/^void agent_broker::AddAgent(hlds_agent* agent)$/;"	f	class:agent_broker
+AddClient	agent_broker.cpp	/^void agent_broker::AddClient(agent_client* client)$/;"	f	class:agent_broker
 All	jsoncpp.cpp	/^    All  \/\/\/< Keep all comments.$/;"	e	enum:Json::CommentStyle::Enum	file:
 AppHuman	hlds_agent.h	/^struct AppHuman {$/;"	s
+AuthConnect	accept_manager.cpp	/^bool accept_manager::AuthConnect(tcp::socket* _socket)$/;"	f	class:accept_manager
 BuiltStyledStreamWriter	jsoncpp.cpp	/^BuiltStyledStreamWriter::BuiltStyledStreamWriter($/;"	f	class:Json::BuiltStyledStreamWriter
 BuiltStyledStreamWriter	jsoncpp.cpp	/^struct BuiltStyledStreamWriter : public StreamWriter$/;"	s	namespace:Json	file:
 CC	Makefile	/^CC= g++$/;"	m
-CFLAGS	Makefile	/^CFLAGS    =-std=c++11  -O1 -Wall -Wno-deprecated -D _LINUX_COMPILE -Wno-unknown-pragmas -Wno-literal-suffix -Wno-switch-enum -Wno-delete-non-virtual-dtor -Wno-switch -Wno-unused-variable$/;"	m
+CFLAGS	Makefile	/^CFLAGS    =-std=c++11  -O1 -Wall -Wno-deprecated -D _HUMAN_COLOR -D  _LINUX_COMPILE -Wno-unknown-pragmas -Wno-literal-suffix -Wno-switch-enum -Wno-delete-non-virtual-dtor -Wno-switch -Wno-unused-variable$/;"	m
 COUNT_DOWN	hlds_agent.h	16;"	d
 COUNT_LEFT	hlds_agent.h	17;"	d
 COUNT_NO	hlds_agent.h	13;"	d
@@ -31,27 +33,54 @@ ClearSendQ	agent_client.cpp	/^void agent_client::ClearSendQ()$/;"	f	class:agent_
 ComPacketProc	agent_client.cpp	/^void agent_client::ComPacketProc()$/;"	f	class:agent_client
 CommentInfo	jsoncpp.cpp	/^Value::CommentInfo::CommentInfo() : comment_(0) {}$/;"	f	class:Json::Value::CommentInfo
 CommentStyle	jsoncpp.cpp	/^struct CommentStyle {$/;"	s	namespace:Json	file:
-Count	hlds_agent.h	/^} Count;$/;"	v	typeref:struct:__anon1
+CompareDeviceInfo	hlds_agent.cpp	/^bool hlds_agent::CompareDeviceInfo(DEVICEINFO data)$/;"	f	class:hlds_agent
+Count	hlds_agent.h	/^struct Count{$/;"	s
+CountDirection	hlds_agent.cpp	/^int hlds_agent::CountDirection(float x, float y)$/;"	f	class:hlds_agent
+CountHumans	hlds_agent.cpp	/^void hlds_agent::CountHumans(void)$/;"	f	class:hlds_agent
 DEFAULT_MAX_PACKET_UNIT_SIZE	agent_broker.h	/^		const static int DEFAULT_MAX_PACKET_UNIT_SIZE = 1024;$/;"	m	class:agent_broker
 DEFAULT_PORT	accept_manager.h	/^        const static unsigned short DEFAULT_PORT = 6885;$/;"	m	class:accept_manager
-DelHldsAgent	agent_manager.cpp	/^void agent_manager::DelHldsAgent()$/;"	f	class:agent_manager
-Enter	hlds_agent.h	/^    int Enter[4];           \/\/Human count who enter to the area from each direction(Use COUNT_XXX macro)$/;"	m	struct:__anon1
+DelAgent	agent_broker.cpp	/^void agent_broker::DelAgent()$/;"	f	class:agent_broker
+DrawCount	hlds_agent.cpp	/^void hlds_agent::DrawCount()$/;"	f	class:hlds_agent
+DrawHumans	hlds_agent.cpp	/^void hlds_agent::DrawHumans(void)$/;"	f	class:hlds_agent
+Enter	hlds_agent.h	/^    int Enter[4];           \/\/Human count who enter to the area from each direction(Use COUNT_XXX macro)$/;"	m	struct:Count
 Enum	jsoncpp.cpp	/^  enum Enum {$/;"	g	struct:Json::CommentStyle	file:
 ErrorInfo	jsoncpp.cpp	/^  class ErrorInfo {$/;"	c	class:Json::OurReader	file:
 Errors	jsoncpp.cpp	/^  typedef std::deque<ErrorInfo> Errors;$/;"	t	class:Json::OurReader	file:
 Exception	jsoncpp.cpp	/^Exception::Exception(std::string const& msg)$/;"	f	class:Json::Exception
-Exit	hlds_agent.h	/^    int Exit[4];            \/\/Human count who exit from the area to each direction(Use COUNT_XXX macro)$/;"	m	struct:__anon1
+Exit	hlds_agent.h	/^    int Exit[4];            \/\/Human count who exit from the area to each direction(Use COUNT_XXX macro)$/;"	m	struct:Count
 FastWriter	jsoncpp.cpp	/^FastWriter::FastWriter()$/;"	f	class:Json::FastWriter
 Features	jsoncpp.cpp	/^Features::Features()$/;"	f	class:Json::Features
+GETTofInfo	hlds_agent.h	/^		TofInfo GETTofInfo(){return m_TofInfo;}$/;"	f	class:hlds_agent
+GetAgentStatus	agent_broker.cpp	/^void agent_broker::GetAgentStatus(xpacket *packet)$/;"	f	class:agent_broker
+GetCamMoveFlag	agent_broker.h	/^		bool GetCamMoveFlag(){return m_cam_move_flag;}$/;"	f	class:agent_broker
+GetCamMoveStatus	agent_broker.cpp	/^uint8_t agent_broker::GetCamMoveStatus()$/;"	f	class:agent_broker
+GetCameraAngle	agent_broker.cpp	/^CAMERAANGLE agent_broker::GetCameraAngle()$/;"	f	class:agent_broker
+GetCameraAngleFlag	agent_broker.h	/^		bool GetCameraAngleFlag(){return m_cam_angle_flag;}$/;"	f	class:agent_broker
 GetCurImage	agent_broker.cpp	/^int agent_broker::GetCurImage(Mat* out_img)$/;"	f	class:agent_broker
+GetDeviceInfo	agent_broker.cpp	/^bool agent_broker::GetDeviceInfo()$/;"	f	class:agent_broker
+GetDeviceManageFlag	agent_broker.h	/^		uint8_t  GetDeviceManageFlag(){return m_device_manage_flag;}$/;"	f	class:agent_broker
+GetEtcConfig	agent_broker.cpp	/^ETCCONFIG agent_broker::GetEtcConfig()$/;"	f	class:agent_broker
+GetEtcConfigFlag	agent_broker.h	/^		bool GetEtcConfigFlag(){return m_etc_config_flag;}$/;"	f	class:agent_broker
+GetFocusFlag	agent_broker.h	/^		bool GetFocusFlag(){return m_zoom_flag;}$/;"	f	class:agent_broker
+GetFocusInOut	agent_broker.cpp	/^float agent_broker::GetFocusInOut()$/;"	f	class:agent_broker
+GetRunFlag	hlds_agent.h	/^		bool GetRunFlag(){return m_agent_run_flag;}$/;"	f	class:hlds_agent
+GetStreamStatus	agent_broker.cpp	/^uint8_t agent_broker::GetStreamStatus()$/;"	f	class:agent_broker
 GetTofInstance	hlds_agent.h	/^        Tof* GetTofInstance() { return m_Tof; }$/;"	f	class:hlds_agent
+HAND_INDICATOR_MAX	hlds_agent.h	35;"	d
+HAND_INDICATOR_MIN	hlds_agent.h	34;"	d
 HEADER	Makefile	/^HEADER :=$(wildcard *.h)$/;"	m
+HUMAN_CURSOR_SIZE	hlds_agent.h	30;"	d
 INSTALL	Makefile	/^INSTALL = \/usr\/bin\/install -c$/;"	m
-InArea	hlds_agent.h	/^    int InArea;             \/\/Total number of humans in count area$/;"	m	struct:__anon1
+InArea	hlds_agent.h	/^    int InArea;             \/\/Total number of humans in count area$/;"	m	struct:Count
+InCountArea	hlds_agent.cpp	/^bool hlds_agent::InCountArea(float x, float y)$/;"	f	class:hlds_agent
 InRange	jsoncpp.cpp	/^static inline bool InRange(double d, T min, U max) {$/;"	f	namespace:Json
 InitAgent	hlds_agent.cpp	/^int hlds_agent::InitAgent()$/;"	f	class:hlds_agent
+InitFalg	agent_broker.cpp	/^void agent_broker::InitFalg()$/;"	f	class:agent_broker
 InitManager	agent_manager.cpp	/^void agent_manager::InitManager()$/;"	f	class:agent_manager
 InitStatusRes	agent_broker.cpp	/^void agent_broker::InitStatusRes()$/;"	f	class:agent_broker
+Initialization	agent_status_db.cpp	/^bool agent_status_db::Initialization(const char *fname)$/;"	f	class:agent_status_db
+Initialization	deviceinfo_db.cpp	/^bool deviceinfo_db::Initialization(const char *fname)$/;"	f	class:deviceinfo_db
+Initialization	event_db.cpp	/^bool event_db::Initialization(const char *fname)$/;"	f	class:event_db
 InitializeHumans	hlds_agent.cpp	/^void hlds_agent::InitializeHumans(void)$/;"	f	class:hlds_agent
 IsIntegral	jsoncpp.cpp	/^static bool IsIntegral(double d) {$/;"	f	namespace:Json
 JSON_ASSERT_UNREACHABLE	jsoncpp.cpp	2376;"	d	file:
@@ -64,7 +93,11 @@ LogicError	jsoncpp.cpp	/^LogicError::LogicError(std::string const& msg)$/;"	f	cl
 MAX_RECVQ_SIZE	agent_client.h	/^        const static int MAX_RECVQ_SIZE = 32;$/;"	m	class:agent_client
 MAX_SENDQ_SIZE	agent_client.h	/^        const static int MAX_SENDQ_SIZE = 2048;$/;"	m	class:agent_client
 MAX_SENDQ_SIZE	agent_websocket.h	/^    const static int MAX_SENDQ_SIZE = 2048;$/;"	m	class:agent_websocket
+MAX_SENDQ_SIZE	event_manager.h	/^		const static int MAX_SENDQ_SIZE = 2048;$/;"	m	class:event_manager
 MAX_TRACKS	hlds_agent.h	12;"	d
+MAX_TRACKS	hlds_agent.h	31;"	d
+M_PI	hlds_agent.h	38;"	d
+ManageDeviceAddDel	agent_broker.cpp	/^void agent_broker::ManageDeviceAddDel(xpacket* recv)$/;"	f	class:agent_broker
 Most	jsoncpp.cpp	/^    Most,  \/\/\/< Recover odd behavior of previous versions (not implemented yet).$/;"	e	enum:Json::CommentStyle::Enum	file:
 Nodes	jsoncpp.cpp	/^  typedef std::stack<Value*> Nodes;$/;"	t	class:Json::OurReader	file:
 None	jsoncpp.cpp	/^    None,  \/\/\/< Drop all comments.$/;"	e	enum:Json::CommentStyle::Enum	file:
@@ -75,6 +108,7 @@ OurFeatures	jsoncpp.cpp	/^OurFeatures::OurFeatures()$/;"	f	class:Json::OurFeatur
 OurFeatures	jsoncpp.cpp	/^class OurFeatures {$/;"	c	namespace:Json	file:
 OurReader	jsoncpp.cpp	/^OurReader::OurReader(OurFeatures const& features)$/;"	f	class:Json::OurReader
 OurReader	jsoncpp.cpp	/^class OurReader {$/;"	c	namespace:Json	file:
+PTofEvent	hlds_agent.h	/^}TofEvent, *PTofEvent;$/;"	t	typeref:struct:__TofEvent
 Path	jsoncpp.cpp	/^Path::Path(const std::string& path,$/;"	f	class:Json::Path
 PathArgument	jsoncpp.cpp	/^PathArgument::PathArgument() : key_(), index_(), kind_(kindNone) {}$/;"	f	class:Json::PathArgument
 PathArgument	jsoncpp.cpp	/^PathArgument::PathArgument(ArrayIndex index)$/;"	f	class:Json::PathArgument
@@ -97,7 +131,7 @@ RECV_BUF_LEN	agent_client.h	/^        const static int RECV_BUF_LEN = 256;$/;"	m
 Reader	jsoncpp.cpp	/^Reader::Reader()$/;"	f	class:Json::Reader
 Reader	jsoncpp.cpp	/^Reader::Reader(const Features& features)$/;"	f	class:Json::Reader
 RuntimeError	jsoncpp.cpp	/^RuntimeError::RuntimeError(std::string const& msg)$/;"	f	class:Json::RuntimeError
-SAFE_DELETE	agent_client.h	11;"	d
+SAFE_DELETE	agent_client.h	12;"	d
 SOURCES	Makefile	/^SOURCES := $(wildcard *.cpp)$/;"	m
 STREAM_IMG_HEIGHT	agent_broker.h	/^		const static int STREAM_IMG_HEIGHT = 240;$/;"	m	class:agent_broker
 STREAM_IMG_WIDTH	agent_broker.h	/^		const static int STREAM_IMG_WIDTH = 320;$/;"	m	class:agent_broker
@@ -107,17 +141,22 @@ SUB_DISPLAY_HEIGHT	hlds_agent.h	25;"	d
 SUB_DISPLAY_WIDTH	hlds_agent.h	24;"	d
 SUB_DISPLAY_X	hlds_agent.h	22;"	d
 SUB_DISPLAY_Y	hlds_agent.h	23;"	d
-SaveIniFile	agent_manager.cpp	/^void agent_manager::SaveIniFile()$/;"	f	class:agent_manager
 SendProc	agent_client.cpp	/^void agent_client::SendProc()$/;"	f	class:agent_client
 SetBrokerController	agent_manager.h	/^		void SetBrokerController(agent_broker* broker_controller) { m_broker_controller = broker_controller;} $/;"	f	class:agent_manager
+SetCameraAngle	agent_broker.cpp	/^void agent_broker::SetCameraAngle(xpacket* recv)$/;"	f	class:agent_broker
 SetConfig	agent_broker.cpp	/^void agent_broker::SetConfig(xpacket* packet)$/;"	f	class:agent_broker
+SetDeviceCheck	agent_broker.cpp	/^void agent_broker::SetDeviceCheck(xpacket* packet)$/;"	f	class:agent_broker
 SetDeviceInfo	agent_broker.cpp	/^void agent_broker::SetDeviceInfo(xpacket* packet)$/;"	f	class:agent_broker
+SetDeviceInfo	hlds_agent.cpp	/^void hlds_agent::SetDeviceInfo(DEVICEINFO device)$/;"	f	class:hlds_agent
+SetEtcConfigSet	agent_broker.cpp	/^void agent_broker::SetEtcConfigSet(xpacket* recv)$/;"	f	class:agent_broker
 SetFocusInOut	agent_broker.cpp	/^void agent_broker::SetFocusInOut(xpacket* packet)$/;"	f	class:agent_broker
 SetFrame	agent_broker.cpp	/^void agent_broker::SetFrame(xpacket* packet)$/;"	f	class:agent_broker
 SetPantiltData	agent_broker.cpp	/^void agent_broker::SetPantiltData(xpacket* packet)$/;"	f	class:agent_broker
+SetRunFlag	hlds_agent.cpp	/^void hlds_agent::SetRunFlag(bool flag)$/;"	f	class:hlds_agent
 SetStreamStatus	agent_broker.cpp	/^void agent_broker::SetStreamStatus(xpacket* packet)$/;"	f	class:agent_broker
 SetThreadCount	hlds_agent.cpp	/^void hlds_agent::SetThreadCount(int index)$/;"	f	class:hlds_agent
-Square	hlds_agent.h	/^    } Square;$/;"	m	struct:__anon1	typeref:struct:__anon1::__anon2
+Square	hlds_agent.h	/^    } Square;$/;"	m	struct:Count	typeref:struct:Count::__anon2
+StatusInfo	hlds_agent.cpp	/^void hlds_agent::StatusInfo()$/;"	f	class:hlds_agent
 StreamHLDSClients	agent_broker.cpp	/^void agent_broker::StreamHLDSClients(uint8_t* jpg_data, uint32_t jpg_len)$/;"	f	class:agent_broker
 StreamWriter	jsoncpp.cpp	/^StreamWriter::StreamWriter()$/;"	f	class:Json::StreamWriter
 StreamWriterBuilder	jsoncpp.cpp	/^StreamWriterBuilder::StreamWriterBuilder()$/;"	f	class:Json::StreamWriterBuilder
@@ -126,12 +165,13 @@ StructuredError	jsoncpp.cpp	/^  struct StructuredError {$/;"	s	class:Json::OurRe
 StyledStreamWriter	jsoncpp.cpp	/^StyledStreamWriter::StyledStreamWriter(std::string indentation)$/;"	f	class:Json::StyledStreamWriter
 StyledWriter	jsoncpp.cpp	/^StyledWriter::StyledWriter()$/;"	f	class:Json::StyledWriter
 TARGET	Makefile	/^TARGET = HLDS_AGENT$/;"	m
+TofEvent	hlds_agent.h	/^}TofEvent, *PTofEvent;$/;"	t	typeref:struct:__TofEvent
 Token	jsoncpp.cpp	/^  class Token {$/;"	c	class:Json::OurReader	file:
 TokenType	jsoncpp.cpp	/^  enum TokenType {$/;"	g	class:Json::OurReader	file:
-TotalEnter	hlds_agent.h	/^    int TotalEnter;         \/\/Total number of humans entering$/;"	m	struct:__anon1
-TotalExit	hlds_agent.h	/^    int TotalExit;          \/\/Total number of humans exiting$/;"	m	struct:__anon1
+TotalEnter	hlds_agent.h	/^    int TotalEnter;         \/\/Total number of humans entering$/;"	m	struct:Count
+TotalExit	hlds_agent.h	/^    int TotalExit;          \/\/Total number of humans exiting$/;"	m	struct:Count
 UIntToStringBuffer	jsoncpp.cpp	/^typedef char UIntToStringBuffer[uintToStringBufferSize];$/;"	t	namespace:Json	file:
-USING_LIBS	Makefile	/^USING_LIBS = -lpthread  -lopencv_core -lopencv_highgui -lturbojpeg -lxpacket -lxthread -lrt -lcommon -lboost_system -lboost_thread -lboost_locale$/;"	m
+USING_LIBS	Makefile	/^USING_LIBS = -lpthread  -lopencv_core -lopencv_highgui -lxpacket -lxthread -lrt -lcommon -lboost_system -lboost_thread -lboost_locale$/;"	m
 UpdateHLDSImage	agent_broker.cpp	/^void agent_broker::UpdateHLDSImage(Mat* img, bool use_lock)$/;"	f	class:agent_broker
 Value	jsoncpp.cpp	/^Value::Value(Int value) {$/;"	f	class:Json::Value
 Value	jsoncpp.cpp	/^Value::Value(Int64 value) {$/;"	f	class:Json::Value
@@ -155,6 +195,8 @@ ValueIterator	jsoncpp.cpp	/^ValueIterator::ValueIterator(const ValueIterator& ot
 ValueIteratorBase	jsoncpp.cpp	/^ValueIteratorBase::ValueIteratorBase($/;"	f	class:Json::ValueIteratorBase
 ValueIteratorBase	jsoncpp.cpp	/^ValueIteratorBase::ValueIteratorBase()$/;"	f	class:Json::ValueIteratorBase
 WEBSOCKET_PORT	agent_websocket.cpp	6;"	d	file:
+WEBSOCKET_PORT	event_manager.cpp	5;"	d	file:
+__TofEvent	hlds_agent.h	/^typedef struct __TofEvent {$/;"	s
 __WEBSOCKET_THREAD_H__	agent_websocket.h	2;"	d
 accept_manager	accept_manager.cpp	/^accept_manager::accept_manager()$/;"	f	class:accept_manager
 accept_manager	accept_manager.cpp	/^accept_manager::accept_manager(unsigned short port)$/;"	f	class:accept_manager
@@ -173,6 +215,7 @@ agent_client	agent_client.cpp	/^agent_client::agent_client(tcp::socket* _socket)
 agent_client	agent_client.h	/^class agent_client : public xthread $/;"	c
 agent_manager	agent_manager.cpp	/^agent_manager::agent_manager()$/;"	f	class:agent_manager
 agent_manager	agent_manager.h	/^class agent_manager : public xthread$/;"	c
+agent_status_db	agent_status_db.h	/^class agent_status_db$/;"	c
 agent_websocket	agent_websocket.cpp	/^agent_websocket::agent_websocket()$/;"	f	class:agent_websocket
 agent_websocket	agent_websocket.h	/^class agent_websocket: public xthread$/;"	c
 all	jsoncpp.cpp	/^Features Features::all() { return Features(); }$/;"	f	class:Json::Features
@@ -199,9 +242,10 @@ bEnable	hlds_agent.h	/^    bool bEnable;               \/\/false : Candidate(Not
 begin	jsoncpp.cpp	/^Value::const_iterator Value::begin() const {$/;"	f	class:Json::Value
 begin	jsoncpp.cpp	/^Value::iterator Value::begin() {$/;"	f	class:Json::Value
 begin_	jsoncpp.cpp	/^  Location begin_;$/;"	m	class:Json::OurReader	file:
-bottom_y	hlds_agent.h	/^        float bottom_y;$/;"	m	struct:__anon1::__anon2
+bottom_y	hlds_agent.h	/^        float bottom_y;$/;"	m	struct:Count::__anon2
 childValues_	jsoncpp.cpp	/^  ChildValues childValues_;$/;"	m	struct:Json::BuiltStyledStreamWriter	file:
 clear	jsoncpp.cpp	/^void Value::clear() {$/;"	f	class:Json::Value
+client	event_manager.h	/^typedef websocketpp::client<websocketpp::config::asio_client> client;$/;"	t
 codePointToUTF8	jsoncpp.cpp	/^static inline std::string codePointToUTF8(unsigned int cp) {$/;"	f	namespace:Json
 collectComments_	jsoncpp.cpp	/^  bool collectComments_;$/;"	m	class:Json::OurReader	file:
 collectComments_	jsoncpp.cpp	/^  bool const collectComments_;$/;"	m	class:Json::OurCharReader	file:
@@ -238,7 +282,10 @@ decodeUnicodeCodePoint	jsoncpp.cpp	/^bool Reader::decodeUnicodeCodePoint(Token& 
 decodeUnicodeEscapeSequence	jsoncpp.cpp	/^bool OurReader::decodeUnicodeEscapeSequence(Token& token,$/;"	f	class:Json::OurReader
 decodeUnicodeEscapeSequence	jsoncpp.cpp	/^bool Reader::decodeUnicodeEscapeSequence(Token& token,$/;"	f	class:Json::Reader
 decrement	jsoncpp.cpp	/^void ValueIteratorBase::decrement() {$/;"	f	class:Json::ValueIteratorBase
+deg2rad	hlds_agent.h	40;"	d
 deref	jsoncpp.cpp	/^Value& ValueIteratorBase::deref() const {$/;"	f	class:Json::ValueIteratorBase
+deviceinfo_db	deviceinfo_db.h	/^class deviceinfo_db$/;"	c
+direction	hlds_agent.h	/^	int		direction;$/;"	m	struct:__TofEvent
 direction	hlds_agent.h	/^    float direction;            \/\/Direction of body(0 degree to 359 degree) --> Positive direction of Y-axis is 0 degree, and clockwise$/;"	m	struct:AppHuman
 document_	jsoncpp.cpp	/^  std::string document_;$/;"	m	class:Json::OurReader	file:
 dropNullPlaceholders	jsoncpp.cpp	/^void FastWriter::dropNullPlaceholders() { dropNullPlaceholders_ = true; }$/;"	f	class:Json::FastWriter
@@ -253,6 +300,7 @@ end_	jsoncpp.cpp	/^  Location end_;$/;"	m	class:Json::OurReader	file:
 endingLineFeedSymbol_	jsoncpp.cpp	/^  std::string endingLineFeedSymbol_;$/;"	m	struct:Json::BuiltStyledStreamWriter	file:
 enterdir	hlds_agent.h	/^    int enterdir;               \/\/Direction entering to the count area(COUNT_XXX macro)$/;"	m	struct:AppHuman
 errors_	jsoncpp.cpp	/^  Errors errors_;$/;"	m	class:Json::OurReader	file:
+event_db	event_db.h	/^class event_db$/;"	c
 event_manager	event_manager.cpp	/^event_manager::event_manager()$/;"	f	class:event_manager
 event_manager	event_manager.h	/^class event_manager : public xthread$/;"	c
 exitdir	hlds_agent.h	/^    int exitdir;                \/\/Direction exiting from the count area(COUNT_XXX macro)$/;"	m	struct:AppHuman
@@ -312,6 +360,7 @@ init_start	main.cpp	/^void init_start()$/;"	f
 initconfig	main.cpp	/^void initconfig()$/;"	f
 initdatabase	main.cpp	/^void initdatabase()$/;"	f
 initlog	main.cpp	/^void initlog(const char *procname)$/;"	f
+inout	hlds_agent.h	/^	int		inout;					\/\/피플카운트 입(1)출(2)확인\/위험구역 출입(2)해제(3) 확인$/;"	m	struct:__TofEvent
 integerToDouble	jsoncpp.cpp	/^static inline double integerToDouble(Json::UInt64 value) {$/;"	f	namespace:Json
 integerToDouble	jsoncpp.cpp	/^template <typename T> static inline double integerToDouble(T value) {$/;"	f	namespace:Json
 invalidPath	jsoncpp.cpp	/^void Path::invalidPath(const std::string& \/*path*\/, int \/*location*\/) {$/;"	f	class:Json::Path
@@ -346,13 +395,20 @@ kNullRef	jsoncpp.cpp	/^const unsigned char& kNullRef = kNull[0];$/;"	m	namespace
 key	jsoncpp.cpp	/^Value ValueIteratorBase::key() const {$/;"	f	class:Json::ValueIteratorBase
 lastValueEnd_	jsoncpp.cpp	/^  Location lastValueEnd_;$/;"	m	class:Json::OurReader	file:
 lastValue_	jsoncpp.cpp	/^  Value* lastValue_;$/;"	m	class:Json::OurReader	file:
-left_x	hlds_agent.h	/^        float left_x;$/;"	m	struct:__anon1::__anon2
+left_x	hlds_agent.h	/^        float left_x;$/;"	m	struct:Count::__anon2
 length	jsoncpp.cpp	/^unsigned Value::CZString::length() const { return storage_.length_; }$/;"	f	class:Json::Value::CZString
 lock_img_set	agent_broker.h	/^		void lock_img_set() { m_img_set_lock.lock(); }$/;"	f	class:agent_broker
+m_Count	hlds_agent.h	/^		Count m_Count;$/;"	m	class:hlds_agent
 m_Tof	hlds_agent.h	/^        Tof *m_Tof = nullptr;$/;"	m	class:hlds_agent
+m_TofInfo	hlds_agent.h	/^        TofInfo m_TofInfo;$/;"	m	class:hlds_agent
 m_acceptor	accept_manager.h	/^        tcp::acceptor *m_acceptor;$/;"	m	class:accept_manager
+m_agent_clients_lock	agent_broker.h	/^		mutex m_agent_clients_lock;$/;"	m	class:agent_broker
 m_agent_lock	hlds_agent.h	/^        mutex  m_agent_lock;$/;"	m	class:hlds_agent
+m_agent_run_flag	hlds_agent.h	/^		int m_agent_run_flag;$/;"	m	class:hlds_agent
+m_agentcheck_manage_lock	agent_broker.h	/^		mutex m_agentcheck_manage_lock; $/;"	m	class:agent_broker
+m_agents	agent_broker.h	/^		deque<hlds_agent*> m_agents;$/;"	m	class:agent_broker
 m_agents_lock	agent_manager.h	/^        mutex m_agents_lock;$/;"	m	class:agent_manager
+m_alivecheck_mode	agent_client.h	/^		uint8_t m_alivecheck_mode;$/;"	m	class:agent_client
 m_angle_x	hlds_agent.h	/^		float m_angle_x;              \/\/Angle to rotate around X-axis(degree)$/;"	m	class:hlds_agent
 m_angle_y	hlds_agent.h	/^        float m_angle_y;               \/\/Angle to rotate around Y-axis(degree)$/;"	m	class:hlds_agent
 m_angle_z	hlds_agent.h	/^        float m_angle_z;               \/\/Angle to rotate around Z-axis(degree)$/;"	m	class:hlds_agent
@@ -364,18 +420,36 @@ m_bCount	hlds_agent.h	/^        bool m_bCount;                 \/\/Mode to displ
 m_bPoint	hlds_agent.h	/^        bool m_bPoint;                 \/\/Mode to display points$/;"	m	class:hlds_agent
 m_bSubDisplay	hlds_agent.h	/^        bool m_bSubDisplay;            \/\/Mode to display sub display$/;"	m	class:hlds_agent
 m_back	hlds_agent.h	/^		Mat m_back;$/;"	m	class:hlds_agent
-m_broker_controller	agent_manager.h	/^        agent_broker* m_broker_controller = nullptr;$/;"	m	class:agent_manager
+m_broker_controller	agent_manager.h	/^		agent_broker* m_broker_controller = nullptr;$/;"	m	class:agent_manager
+m_cam_angle_flag	agent_broker.h	/^		bool m_cam_angle_flag;$/;"	m	class:agent_broker
+m_cam_move_flag	agent_broker.h	/^		bool m_cam_move_flag;$/;"	m	class:agent_broker
+m_cam_status	agent_broker.h	/^		uint8_t m_cam_status;$/;"	m	class:agent_broker
+m_camera_angle_data	agent_broker.h	/^		CAMERAANGLE m_camera_angle_data;$/;"	m	class:agent_broker
+m_camera_angle_lock	agent_broker.h	/^		mutex m_camera_angle_lock;$/;"	m	class:agent_broker
+m_camera_move_lock	agent_broker.h	/^		mutex m_camera_move_lock;$/;"	m	class:agent_broker
 m_camera_type	stream_hlds.h	/^    int m_camera_type = 0;$/;"	m	class:stream_hlds
 m_clients	agent_broker.h	/^		deque<agent_client*> m_clients;	$/;"	m	class:agent_broker
-m_clients_lock	agent_broker.h	/^		mutex m_clients_lock;$/;"	m	class:agent_broker
 m_compacket_thread	agent_client.h	/^        thread m_compacket_thread;$/;"	m	class:agent_client
 m_compacket_thread_stop_flag	agent_client.h	/^        bool m_compacket_thread_stop_flag = false;$/;"	m	class:agent_client
 m_context_stream_framedrop	agent_websocket.h	/^    bool m_context_stream_framedrop = false;$/;"	m	class:agent_websocket
 m_cur_hlds_img	agent_broker.h	/^		Mat* m_cur_hlds_img = nullptr;$/;"	m	class:agent_broker
+m_device_check_lock	agent_broker.h	/^		mutex m_device_check_lock;$/;"	m	class:agent_broker
+m_device_exits_flag	agent_broker.h	/^		bool m_device_exits_flag;$/;"	m	class:agent_broker
+m_device_exits_lock	agent_broker.h	/^		mutex  m_device_exits_lock;$/;"	m	class:agent_broker
+m_device_info	agent_broker.h	/^		DEVICEINFO m_device_info;$/;"	m	class:agent_broker
+m_device_info	agent_manager.h	/^		DEVICEINFO m_device_info; $/;"	m	class:agent_manager
+m_device_info_status	agent_manager.h	/^        bool m_device_info_status;$/;"	m	class:agent_manager
+m_device_manage_flag	agent_broker.h	/^		uint8_t m_device_manage_flag;$/;"	m	class:agent_broker
+m_device_manage_lock	agent_broker.h	/^		mutex m_device_manage_lock;$/;"	m	class:agent_broker
+m_deviceinfo	hlds_agent.h	/^		DEVICEINFO m_deviceinfo;$/;"	m	class:hlds_agent
 m_dx	hlds_agent.h	/^        float m_dx;                  \/\/Shift length to x-axis positive direction(mm)$/;"	m	class:hlds_agent
 m_dy	hlds_agent.h	/^        float m_dy;                  \/\/Shift length to y-axis positive direction(mm)$/;"	m	class:hlds_agent
 m_el_sec	agent_client.h	/^        chrono::duration<double> m_el_sec;$/;"	m	class:agent_client
 m_end_time	agent_client.h	/^        chrono::time_point<chrono::system_clock> m_end_time;$/;"	m	class:agent_client
+m_etc_config_data	agent_broker.h	/^		ETCCONFIG m_etc_config_data;$/;"	m	class:agent_broker
+m_etc_config_data_lock	agent_broker.h	/^		mutex m_etc_config_data_lock;$/;"	m	class:agent_broker
+m_etc_config_flag	agent_broker.h	/^		bool m_etc_config_flag;$/;"	m	class:agent_broker
+m_focus_mode_lock	agent_broker.h	/^		mutex m_focus_mode_lock;$/;"	m	class:agent_broker
 m_frame	hlds_agent.h	/^        FrameDepth m_frame;$/;"	m	class:hlds_agent
 m_frame3d	hlds_agent.h	/^        Frame3d m_frame3d;$/;"	m	class:hlds_agent
 m_framehumans	hlds_agent.h	/^        FrameHumans m_framehumans;$/;"	m	class:hlds_agent
@@ -383,20 +457,18 @@ m_height	hlds_agent.h	/^        float m_height;             \/\/Height from floo
 m_hlds_agents	agent_manager.h	/^        deque<hlds_agent*> m_hlds_agents;$/;"	m	class:agent_manager
 m_img	hlds_agent.h	/^		Mat m_img;$/;"	m	class:hlds_agent
 m_img_set_lock	agent_broker.h	/^		mutex m_img_set_lock; \/\/img_set components : lpr_img & context_img$/;"	m	class:agent_broker
-m_index	agent_manager.h	/^        int m_index;$/;"	m	class:agent_manager
-m_index	event_manager.h	/^        int m_index;$/;"	m	class:event_manager
 m_index	hlds_agent.h	/^		int m_index;$/;"	m	class:hlds_agent
 m_io_service	accept_manager.h	/^        boost::asio::io_service m_io_service;$/;"	m	class:accept_manager
 m_jpg_buf	stream_hlds.h	/^    uint8_t* m_jpg_buf;$/;"	m	class:stream_hlds
-m_jpg_compressor	stream_hlds.h	/^    tjhandle m_jpg_compressor;$/;"	m	class:stream_hlds
 m_lpr_stream_framedrop	agent_websocket.h	/^    bool m_lpr_stream_framedrop = false;$/;"	m	class:agent_websocket
 m_making_packet	accept_manager.h	/^        xpacket *m_making_packet = nullptr;$/;"	m	class:accept_manager
-m_making_packet	agent_client.h	/^        xpacket *m_making_packet = nullptr;$/;"	m	class:agent_client
+m_making_packet	agent_client.h	/^		xpacket *m_making_packet = nullptr;$/;"	m	class:agent_client
+m_manage_status	agent_manager.h	/^		uint8_t m_manage_status;        $/;"	m	class:agent_manager
 m_msg_buf	accept_manager.h	/^        uint8_t m_recv_buf[RECV_BUF_LEN], m_msg_buf[RECV_BUF_LEN];$/;"	m	class:accept_manager
 m_msg_buf	agent_client.h	/^        uint8_t m_recv_buf[RECV_BUF_LEN], m_msg_buf[RECV_BUF_LEN];$/;"	m	class:agent_client
 m_msg_buf_pos	accept_manager.h	/^        size_t  m_msg_buf_pos = 0;$/;"	m	class:accept_manager
-m_msg_buf_pos	agent_client.h	/^        size_t  m_msg_buf_pos = 0;$/;"	m	class:agent_client
-m_port	accept_manager.h	/^        unsigned short m_port = DEFAULT_PORT;$/;"	m	class:accept_manager
+m_msg_buf_pos	agent_client.h	/^		size_t  m_msg_buf_pos = 0;$/;"	m	class:agent_client
+m_port	accept_manager.h	/^		unsigned short m_port = DEFAULT_PORT;$/;"	m	class:accept_manager
 m_prefix_buf	accept_manager.h	/^        deque<uint8_t> m_prefix_buf;$/;"	m	class:accept_manager
 m_prefix_buf	agent_client.h	/^        deque<uint8_t> m_prefix_buf;$/;"	m	class:agent_client
 m_recv_buf	accept_manager.h	/^        uint8_t m_recv_buf[RECV_BUF_LEN], m_msg_buf[RECV_BUF_LEN];$/;"	m	class:accept_manager
@@ -406,23 +478,34 @@ m_recv_q_lock	agent_client.h	/^        mutex m_recv_q_lock;$/;"	m	class:agent_cl
 m_recv_step	accept_manager.h	/^        int m_recv_step = 0;$/;"	m	class:accept_manager
 m_recv_step	agent_client.h	/^        int m_recv_step = 0;$/;"	m	class:agent_client
 m_run_thread	agent_websocket.h	/^    thread m_run_thread;$/;"	m	class:agent_websocket
+m_run_thread	event_manager.h	/^		thread m_run_thread;$/;"	m	class:event_manager
 m_send_q	agent_client.h	/^        deque<xpacket*> m_send_q;$/;"	m	class:agent_client
 m_send_q	agent_websocket.h	/^    deque<xpacket*> m_send_q;$/;"	m	class:agent_websocket
+m_send_q	event_manager.h	/^		deque<xpacket*> m_send_q;$/;"	m	class:event_manager
 m_send_q_lock	agent_client.h	/^        mutex  m_send_q_lock;$/;"	m	class:agent_client
 m_send_q_lock	agent_websocket.h	/^    mutex m_send_q_lock;$/;"	m	class:agent_websocket
+m_send_q_lock	event_manager.h	/^		mutex m_send_q_lock;$/;"	m	class:event_manager
 m_send_thread	agent_client.h	/^        thread m_send_thread;$/;"	m	class:agent_client
 m_send_thread_stop_flag	agent_client.h	/^        bool m_send_thread_stop_flag = false;$/;"	m	class:agent_client
 m_socket	agent_client.h	/^        tcp::socket* m_socket;$/;"	m	class:agent_client
 m_socket_lock	accept_manager.h	/^        mutex m_socket_lock;$/;"	m	class:accept_manager
 m_socket_lock	agent_client.h	/^        mutex m_socket_lock;$/;"	m	class:agent_client
 m_start_time	agent_client.h	/^        chrono::time_point<chrono::system_clock> m_start_time;$/;"	m	class:agent_client
-m_stream_status	hlds_agent.h	/^        int m_stream_status;			\/\/ 0 : off  1: on$/;"	m	class:hlds_agent
+m_stream_mode_lock	agent_broker.h	/^		mutex m_stream_mode_lock;$/;"	m	class:agent_broker
+m_stream_onoff	agent_broker.h	/^		uint8_t m_stream_onoff;$/;"	m	class:agent_broker
+m_stream_status	hlds_agent.h	/^        uint8_t m_stream_status;			\/\/ 0 : off  1: on$/;"	m	class:hlds_agent
+m_subdisplay	hlds_agent.h	/^		Mat m_subdisplay;$/;"	m	class:hlds_agent
 m_test	accept_manager.h	/^        int m_test;$/;"	m	class:accept_manager
-m_tofm	agent_manager.h	/^        TofManager *m_tofm = nullptr;$/;"	m	class:agent_manager
+m_tmsclient	event_manager.h	/^		client m_tmsclient;$/;"	m	class:event_manager
+m_tofm	agent_manager.h	/^		TofManager *m_tofm = nullptr;$/;"	m	class:agent_manager
+m_uri	event_manager.h	/^		std::string m_uri;$/;"	m	class:event_manager
 m_webserver	agent_websocket.h	/^    web_server m_webserver;$/;"	m	class:agent_websocket
 m_websocket_thread_run_flag	agent_websocket.h	/^    bool m_websocket_thread_run_flag = true;$/;"	m	class:agent_websocket
+m_websocket_thread_run_flag	event_manager.h	/^		bool m_websocket_thread_run_flag = true;$/;"	m	class:event_manager
 m_z_buffer	hlds_agent.h	/^		float m_z_buffer[640 * 2][480 * 2];$/;"	m	class:hlds_agent
+m_zoom	agent_broker.h	/^		float m_zoom;$/;"	m	class:agent_broker
 m_zoom	hlds_agent.h	/^        float m_zoom;                 \/\/Zoom ratio$/;"	m	class:hlds_agent
+m_zoom_flag	agent_broker.h	/^		bool m_zoom_flag;$/;"	m	class:agent_broker
 main	main.cpp	/^int main(int argc, char** argv)$/;"	f
 make	jsoncpp.cpp	/^Value& Path::make(Value& root) const {$/;"	f	class:Json::Path
 makePath	jsoncpp.cpp	/^void Path::makePath(const std::string& path, const InArgs& in) {$/;"	f	class:Json::Path
@@ -439,6 +522,7 @@ memberName	jsoncpp.cpp	/^char const* ValueIteratorBase::memberName() const {$/;"
 memberName	jsoncpp.cpp	/^char const* ValueIteratorBase::memberName(char const** end) const {$/;"	f	class:Json::ValueIteratorBase
 message	jsoncpp.cpp	/^    std::string message;$/;"	m	struct:Json::OurReader::StructuredError	file:
 message_	jsoncpp.cpp	/^    std::string message_;$/;"	m	class:Json::OurReader::ErrorInfo	file:
+message_ptr	event_manager.h	/^typedef websocketpp::config::asio_client::message_type::ptr message_ptr;$/;"	t
 minInt	jsoncpp.cpp	/^const Int Value::minInt = Int(~(UInt(-1) \/ 2));$/;"	m	class:Json::Value	file:
 minInt64	jsoncpp.cpp	/^const Int64 Value::minInt64 = Int64(~(UInt64(-1) \/ 2));$/;"	m	class:Json::Value	file:
 minLargestInt	jsoncpp.cpp	/^const LargestInt Value::minLargestInt = LargestInt(~(LargestUInt(-1) \/ 2));$/;"	m	class:Json::Value	file:
@@ -455,8 +539,12 @@ offset_limit	jsoncpp.cpp	/^    size_t offset_limit;$/;"	m	struct:Json::OurReader
 offset_start	jsoncpp.cpp	/^    size_t offset_start;$/;"	m	struct:Json::OurReader::StructuredError	file:
 omitEndingLineFeed	jsoncpp.cpp	/^void FastWriter::omitEndingLineFeed() { omitEndingLineFeed_ = true; }$/;"	f	class:Json::FastWriter
 on_close	agent_websocket.cpp	/^void agent_websocket::on_close(connection_hdl hdl)$/;"	f	class:agent_websocket
+on_close	event_manager.cpp	/^void event_manager::on_close(connection_hdl hdl)$/;"	f	class:event_manager
+on_fail	event_manager.cpp	/^void event_manager::on_fail(connection_hdl hdl)$/;"	f	class:event_manager
 on_message	agent_websocket.cpp	/^void agent_websocket::on_message(connection_hdl hdl, web_server::message_ptr msg)$/;"	f	class:agent_websocket
+on_message	event_manager.cpp	/^void event_manager::on_message(connection_hdl hdl, client::message_ptr msg)$/;"	f	class:event_manager
 on_open	agent_websocket.cpp	/^void agent_websocket::on_open(connection_hdl hdl)$/;"	f	class:agent_websocket
+on_open	event_manager.cpp	/^void event_manager::on_open(connection_hdl hdl)$/;"	f	class:event_manager
 operator !	jsoncpp.cpp	/^bool Value::operator!() const { return isNull(); }$/;"	f	class:Json::Value
 operator !=	jsoncpp.cpp	/^bool Value::operator!=(const Value& other) const { return !(*this == other); }$/;"	f	class:Json::Value
 operator <	jsoncpp.cpp	/^bool Value::CZString::operator<(const CZString& other) const {$/;"	f	class:Json::Value::CZString
@@ -493,6 +581,7 @@ parse	jsoncpp.cpp	/^bool Reader::parse(const char* beginDoc,$/;"	f	class:Json::R
 parse	jsoncpp.cpp	/^bool Reader::parse(std::istream& sin, Value& root, bool collectComments) {$/;"	f	class:Json::Reader
 parseFromStream	jsoncpp.cpp	/^bool parseFromStream($/;"	f	namespace:Json
 pop_packet	agent_websocket.cpp	/^xpacket* agent_websocket::pop_packet()$/;"	f	class:agent_websocket
+pop_packet	event_manager.cpp	/^xpacket* event_manager::pop_packet()$/;"	f	class:event_manager
 prex	hlds_agent.h	/^    float prex;                 \/\/Previous X-coordinate of center of gravity of the human$/;"	m	struct:AppHuman
 prey	hlds_agent.h	/^    float prey;                 \/\/Previous Y-coordinate of center of gravity of the human$/;"	m	struct:AppHuman
 pushError	jsoncpp.cpp	/^bool OurReader::pushError(const Value& value, const std::string& message) {$/;"	f	class:Json::OurReader
@@ -503,6 +592,7 @@ pushValue	jsoncpp.cpp	/^void BuiltStyledStreamWriter::pushValue(std::string cons
 pushValue	jsoncpp.cpp	/^void StyledStreamWriter::pushValue(const std::string& value) {$/;"	f	class:Json::StyledStreamWriter
 pushValue	jsoncpp.cpp	/^void StyledWriter::pushValue(const std::string& value) {$/;"	f	class:Json::StyledWriter
 push_packet	agent_websocket.cpp	/^void agent_websocket::push_packet(xpacket *packet)$/;"	f	class:agent_websocket
+push_packet	event_manager.cpp	/^void event_manager::push_packet(xpacket *packet)$/;"	f	class:event_manager
 readArray	jsoncpp.cpp	/^bool OurReader::readArray(Token& tokenStart) {$/;"	f	class:Json::OurReader
 readArray	jsoncpp.cpp	/^bool Reader::readArray(Token& tokenStart) {$/;"	f	class:Json::Reader
 readCStyleComment	jsoncpp.cpp	/^bool OurReader::readCStyleComment() {$/;"	f	class:Json::OurReader
@@ -539,8 +629,9 @@ resolve	jsoncpp.cpp	/^const Value& Path::resolve(const Value& root) const {$/;"	
 resolveReference	jsoncpp.cpp	/^Value& Value::resolveReference(char const* key, char const* cend)$/;"	f	class:Json::Value
 resolveReference	jsoncpp.cpp	/^Value& Value::resolveReference(const char* key) {$/;"	f	class:Json::Value
 rightMargin_	jsoncpp.cpp	/^  int rightMargin_;$/;"	m	struct:Json::BuiltStyledStreamWriter	file:
-right_x	hlds_agent.h	/^        float right_x;$/;"	m	struct:__anon1::__anon2
+right_x	hlds_agent.h	/^        float right_x;$/;"	m	struct:Count::__anon2
 run_thread	agent_websocket.cpp	/^void agent_websocket::run_thread()$/;"	f	class:agent_websocket
+run_thread	event_manager.cpp	/^void event_manager::run_thread()$/;"	f	class:event_manager
 setComment	jsoncpp.cpp	/^void Value::CommentInfo::setComment(const char* text, size_t len) {$/;"	f	class:Json::Value::CommentInfo
 setComment	jsoncpp.cpp	/^void Value::setComment(const char* comment, CommentPlacement placement) {$/;"	f	class:Json::Value
 setComment	jsoncpp.cpp	/^void Value::setComment(const char* comment, size_t len, CommentPlacement placement) {$/;"	f	class:Json::Value
@@ -565,7 +656,7 @@ start_	jsoncpp.cpp	/^    Location start_;$/;"	m	class:Json::OurReader::Token	fil
 status	hlds_agent.h	/^    HumanStatus status;         \/\/Status$/;"	m	struct:AppHuman
 stream_hlds	stream_hlds.cpp	/^stream_hlds::stream_hlds()$/;"	f	class:stream_hlds
 stream_hlds	stream_hlds.h	/^class stream_hlds : public xthread$/;"	c
-stream_onoff	agent_client.h	/^		uint8_t stream_onoff = 0; \/\/default OFF$/;"	m	class:agent_client
+stream_onoff	agent_client.h	/^		uint8_t stream_onoff = 1; \/\/default OFF$/;"	m	class:agent_client
 strictMode	jsoncpp.cpp	/^Features Features::strictMode() {$/;"	f	class:Json::Features
 strictMode	jsoncpp.cpp	/^void CharReaderBuilder::strictMode(Json::Value* settings)$/;"	f	class:Json::CharReaderBuilder
 strictRoot_	jsoncpp.cpp	/^  bool strictRoot_;$/;"	m	class:Json::OurFeatures	file:
@@ -573,9 +664,10 @@ strnpbrk	jsoncpp.cpp	/^static char const* strnpbrk(char const* s, char const* ac
 swap	jsoncpp.cpp	/^void Value::CZString::swap(CZString& other) {$/;"	f	class:Json::Value::CZString
 swap	jsoncpp.cpp	/^void Value::swap(Value& other) {$/;"	f	class:Json::Value
 swapPayload	jsoncpp.cpp	/^void Value::swapPayload(Value& other) {$/;"	f	class:Json::Value
-testm_TofInfo	hlds_agent.h	/^        TofInfo testm_TofInfo;$/;"	m	class:hlds_agent
+thread_flag	hlds_agent.h	/^		bool thread_flag;$/;"	m	class:hlds_agent
 throwLogicError	jsoncpp.cpp	/^void throwLogicError(std::string const& msg)$/;"	f	namespace:Json
 throwRuntimeError	jsoncpp.cpp	/^void throwRuntimeError(std::string const& msg)$/;"	f	namespace:Json
+time	hlds_agent.h	/^	time_t  time;				    \/\/이벤트 감지 시간$/;"	m	struct:__TofEvent
 toStyledString	jsoncpp.cpp	/^std::string Value::toStyledString() const {$/;"	f	class:Json::Value
 tokenArrayBegin	jsoncpp.cpp	/^    tokenArrayBegin,$/;"	e	enum:Json::OurReader::TokenType	file:
 tokenArrayEnd	jsoncpp.cpp	/^    tokenArrayEnd,$/;"	e	enum:Json::OurReader::TokenType	file:
@@ -592,13 +684,13 @@ tokenObjectEnd	jsoncpp.cpp	/^    tokenObjectEnd,$/;"	e	enum:Json::OurReader::Tok
 tokenString	jsoncpp.cpp	/^    tokenString,$/;"	e	enum:Json::OurReader::TokenType	file:
 tokenTrue	jsoncpp.cpp	/^    tokenTrue,$/;"	e	enum:Json::OurReader::TokenType	file:
 token_	jsoncpp.cpp	/^    Token token_;$/;"	m	class:Json::OurReader::ErrorInfo	file:
-top_y	hlds_agent.h	/^        float top_y;$/;"	m	struct:__anon1::__anon2
+top_y	hlds_agent.h	/^        float top_y;$/;"	m	struct:Count::__anon2
 track	hlds_agent.h	/^    } track[MAX_TRACKS];$/;"	m	struct:AppHuman	typeref:struct:AppHuman::__anon3
 trackcnt	hlds_agent.h	/^    int trackcnt;               \/\/Number of points in the track$/;"	m	struct:AppHuman
 type	jsoncpp.cpp	/^ValueType Value::type() const { return type_; }$/;"	f	class:Json::Value
 type_	jsoncpp.cpp	/^    TokenType type_;$/;"	m	class:Json::OurReader::Token	file:
 uintToString	jsoncpp.cpp	/^static inline void uintToString(LargestUInt value, char*& current) {$/;"	f	namespace:Json
-uintToStringBufferSize	jsoncpp.cpp	/^  uintToStringBufferSize = 3 * sizeof(LargestUInt) + 1$/;"	e	enum:Json::__anon4	file:
+uintToStringBufferSize	jsoncpp.cpp	/^  uintToStringBufferSize = 3 * sizeof(LargestUInt) + 1$/;"	e	enum:Json::__anon1	file:
 unindent	jsoncpp.cpp	/^void BuiltStyledStreamWriter::unindent() {$/;"	f	class:Json::BuiltStyledStreamWriter
 unindent	jsoncpp.cpp	/^void StyledStreamWriter::unindent() {$/;"	f	class:Json::StyledStreamWriter
 unindent	jsoncpp.cpp	/^void StyledWriter::unindent() {$/;"	f	class:Json::StyledWriter
@@ -614,8 +706,11 @@ valueToString	jsoncpp.cpp	/^std::string valueToString(UInt value) {$/;"	f	namesp
 valueToString	jsoncpp.cpp	/^std::string valueToString(bool value) { return value ? "true" : "false"; }$/;"	f	namespace:Json
 valueToString	jsoncpp.cpp	/^std::string valueToString(double value) {$/;"	f	namespace:Json
 web_connection	agent_websocket.h	/^typedef std::set<connection_hdl,std::owner_less<connection_hdl>> web_connection;$/;"	t
+web_connection	event_manager.h	/^typedef std::set<connection_hdl,std::owner_less<connection_hdl>> web_connection;$/;"	t
 web_connections	agent_websocket.h	/^    web_connection web_connections;$/;"	m	class:agent_websocket
+web_connections	event_manager.h	/^		web_connection web_connections;$/;"	m	class:event_manager
 web_connections_mutex	agent_websocket.h	/^    mutex web_connections_mutex;$/;"	m	class:agent_websocket
+web_connections_mutex	event_manager.h	/^		mutex web_connections_mutex;$/;"	m	class:event_manager
 web_server	agent_websocket.h	/^typedef websocketpp::server<websocketpp::config::asio> web_server;$/;"	t
 what	jsoncpp.cpp	/^char const* Exception::what() const throw()$/;"	f	class:Json::Exception
 write	jsoncpp.cpp	/^int BuiltStyledStreamWriter::write(Value const& root, std::ostream* sout)$/;"	f	class:Json::BuiltStyledStreamWriter
@@ -642,6 +737,10 @@ writeValue	jsoncpp.cpp	/^void StyledWriter::writeValue(const Value& value) {$/;"
 writeWithIndent	jsoncpp.cpp	/^void BuiltStyledStreamWriter::writeWithIndent(std::string const& value) {$/;"	f	class:Json::BuiltStyledStreamWriter
 writeWithIndent	jsoncpp.cpp	/^void StyledStreamWriter::writeWithIndent(const std::string& value) {$/;"	f	class:Json::StyledStreamWriter
 writeWithIndent	jsoncpp.cpp	/^void StyledWriter::writeWithIndent(const std::string& value) {$/;"	f	class:Json::StyledWriter
+wszAreaID	hlds_agent.h	/^	char	wszAreaID[10];			\/\/구역 ID$/;"	m	struct:__TofEvent
+wszAreaName	hlds_agent.h	/^	char	wszAreaName[256];	\/\/구역명$/;"	m	struct:__TofEvent
+wszDeviceID	hlds_agent.h	/^	char	wszDeviceID[10];		\/\/장치 ID$/;"	m	struct:__TofEvent
+wszIp	hlds_agent.h	/^	char	wszIp[20];				\/\/tof ip$/;"	m	struct:__TofEvent
 x	hlds_agent.h	/^        float x;                \/\/X-cordinate of one point in the track$/;"	m	struct:AppHuman::__anon3
 x	hlds_agent.h	/^    float x;                    \/\/X-coordinate of center of gravity of the human$/;"	m	struct:AppHuman
 y	hlds_agent.h	/^        float y;                \/\/Y-cordinate of one point in the track$/;"	m	struct:AppHuman::__anon3

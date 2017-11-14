@@ -1,57 +1,44 @@
 #include<iostream>
+#include "agent_broker.h"
 #include "hlds_agent.h"
 
 using namespace std;
 
-
-//Human count
-struct {
-    int Enter[4];           //Human count who enter to the area from each direction(Use COUNT_XXX macro)
-    int Exit[4];            //Human count who exit from the area to each direction(Use COUNT_XXX macro)
-    int TotalEnter;         //Total number of humans entering
-    int TotalExit;          //Total number of humans exiting
-    int InArea;             //Total number of humans in count area
-
-    //Count area(Counted when a human exits from the area)
-    struct {
-        float left_x;
-        float top_y;
-        float right_x;
-        float bottom_y;
-    } Square;
-} Count;
-
-
-
 hlds_agent::hlds_agent()
 {
-    m_angle_x = 60.0f;              //Angle to rotate around X-axis(degree)
-    m_angle_y = 0.0f;               //Angle to rotate around Y-axis(degree)
-    m_angle_z = 0.0f;               //Angle to rotate around Z-axis(degree)
-    m_height = 2700.0f;             //Height from floor(mm)
-    m_dx = 648.0f;                  //Shift length to x-axis positive direction(mm)
-    m_dy = 966.0f;                  //Shift length to y-axis positive direction(mm)
-    m_zoom = 0.12f;                 //Zoom ratio
-    m_bPoint = true;                //Mode to display points
-    m_bBack = false;                //Mode to display footprint on background
-    m_bCount = true;                //Mode to display human count
-    m_bBoxShift = true;             //true: shift, false: change size in count area setting mode
-    m_bSubDisplay = true;           //Mode to display sub display
-    m_apphumanid = 0;
-    m_stream_status = 1;			//STREAM OFF DEFAULT
-	m_img = Mat::zeros(480 * 2, 640 * 2, CV_8UC3);
-	m_back = Mat::zeros(480 * 2, 640 * 2, CV_8UC3);
+	m_angle_x = 50.0f;              //Angle to rotate around X-axis(degree)
+	m_angle_y = 0.0f;               //Angle to rotate around Y-axis(degree)
+	m_angle_z = 0.0f;               //Angle to rotate around Z-axis(degree)
+	m_height = 2700.0f;             //Height from floor(mm)
+	m_dx = 648.0f;                  //Shift length to x-axis positive direction(mm)
+	m_dy = 966.0f;                  //Shift length to y-axis positive direction(mm)
+	m_zoom = 0.12f;                 //Zoom ratio
+	m_bPoint = true;                //Mode to display points
+	m_bBack = false;                //Mode to display footprint on background
+	m_bCount = true;                //Mode to display human count
+	m_bBoxShift = true;             //true: shift, false: change size in count area setting mode
+	m_bSubDisplay = true;           //Mode to display sub display
+	m_apphumanid = 0;
+	m_stream_status = 0;			//STREAM OFF DEFAULT
+	thread_flag = false;
+	m_agent_run_flag = true; // for test
 	m_Tof = new Tof;  
-    InitAgent();
 }
+
 
 hlds_agent::~hlds_agent()
 {
-    m_Tof->Stop();
+	m_Tof->Stop();
 	m_Tof->Close();
 	delete m_Tof;
 }
 
+
+void hlds_agent::SetDeviceInfo(DEVICEINFO device)
+{
+	m_deviceinfo = device;
+	InitAgent();
+}
 
 void hlds_agent::SetThreadCount(int index)
 {
@@ -84,108 +71,29 @@ void hlds_agent::InitializeHumans(void)
 bool hlds_agent::LoadIniFile(void)
 {
     int  ret = 0;
-    string stBuffer;
-
-    /*stBuffer = _GetPrivateProfileString(inisection,"ANGLE_X", to_string(m_angle_x), &ret, inifilename);
-    if (ret != 0){
-        m_angle_x = stof(stBuffer);
-    }
-    stBuffer = _GetPrivateProfileString(inisection, "ANGLE_Y", to_string(m_angle_y), &ret, inifilename);
-    if (ret != 0){
-        m_angle_y = stof(stBuffer);
-    }
-    stBuffer = _GetPrivateProfileString(inisection, "ANGLE_Z", to_string(m_angle_z), &ret, inifilename);
-    if (ret != 0){
-        m_angle_z = stof(stBuffer);
-    }
-    stBuffer = _GetPrivateProfileString(inisection,"HEIGHT", to_string(m_height), &ret, inifilename);
-    if (ret != 0){
-        m_height = stof(stBuffer);
-    }
-    stBuffer = _GetPrivateProfileString(inisection,"SHIFT_X", to_string(m_dx), &ret, inifilename);
-    if (ret != 0){
-        m_dx = stof(stBuffer);
-    }
-
-    stBuffer = _GetPrivateProfileString(inisection,"SHIFT_Y", to_string(m_dy), &ret, inifilename);
-    if (ret != 0){
-        m_dy = stof(stBuffer);
-    }
-
-    stBuffer = _GetPrivateProfileString(inisection,"ZOOM", to_string(m_zoom), &ret, inifilename);
-    if (ret != 0){
-        m_zoom = stof(stBuffer);
-    }
-
-    stBuffer = _GetPrivateProfileString(inisection,"COUNT_LEFT_X", to_string(Count.Square.left_x), &ret, inifilename);
-    if (ret != 0){
-        Count.Square.left_x = stof(stBuffer);
-    }
-
-    stBuffer = _GetPrivateProfileString(inisection,"COUNT_TOP_Y", to_string(Count.Square.top_y), &ret, inifilename);
-    if (ret != 0){
-        Count.Square.top_y = stof(stBuffer);
-    }
-
-    stBuffer = _GetPrivateProfileString(inisection,"COUNT_RIGHT_X", to_string(Count.Square.right_x), &ret, inifilename);
-    if (ret != 0){
-        Count.Square.right_x = stof(stBuffer);
-    }
-
-    stBuffer = _GetPrivateProfileString(inisection,"COUNT_BOTTOM_Y", to_string(Count.Square.bottom_y),&ret,inifilename);
-    if (ret != 0){
-        Count.Square.bottom_y = stof(stBuffer);
-    }*/
+	// to do load select database hlds_agent status //	
     return true;
 }
 
 
 int hlds_agent::InitAgent()
 {
-	//Initialize human counter
-    memset(&Count, 0, sizeof(Count));
-    Count.Square.left_x = -3235;
-    Count.Square.top_y = -3219;
-    Count.Square.right_x = 3263;
-    Count.Square.bottom_y = -2937;
 	
-	
-	// for test //
-	/*testm_TofInfo.tofid="EC:2E:4E:01:02:55";
-	  testm_TofInfo.tofmac="EC:2E:4E:01:02:55";
-	  testm_TofInfo.tofip="172.16.100.228";
-	  testm_TofInfo.rtp_port=0;
-	  */
-
-     // for test //
-     if(hlds_agent::m_index == 0)
-     {
-         testm_TofInfo.tofid="EC:2E:4E:01:03:C8";
-         testm_TofInfo.tofmac="EC:2E:4E:01:03:C8";
-         testm_TofInfo.tofip="172.16.120.228";
-         testm_TofInfo.rtp_port=0;
-     }
-    
- 
 	//Initialize human counter
-	/*if(hlds_agent::m_index == 0)
-     {
-         testm_TofInfo.tofid="EC:2E:4E:01:02:55";
-         testm_TofInfo.tofmac="EC:2E:4E:01:02:55";
-         testm_TofInfo.tofip="172.16.100.228";
-         testm_TofInfo.rtp_port=0;
-     }
-    */
-	/*else
-     {
-         testm_TofInfo.tofid="EC:2E:4E:01:03:B9";
-         testm_TofInfo.tofmac="EC:2E:4E:01:03:B9";
-         testm_TofInfo.tofip="172.16.100.201";
-         testm_TofInfo.rtp_port=0;
-     }*/
+    memset(&m_Count, 0, sizeof(m_Count));
+    m_Count.Square.left_x = -3235;
+    m_Count.Square.top_y = -3219;
+    m_Count.Square.right_x = 3263;
+    m_Count.Square.bottom_y = -2937;
+	
+	//Initialize human counter
+	m_TofInfo.tofid = m_deviceinfo.device_id;
+	m_TofInfo.tofmac = m_deviceinfo.mac_address;
+	m_TofInfo.tofip = m_deviceinfo.ip;
+	m_TofInfo.rtp_port = 0;
 
-    if(m_Tof->Open(testm_TofInfo) != Result::OK){ 
-    std::cout << "TOF ID " << testm_TofInfo.tofid << " Open Error" << endl;
+	if(m_Tof->Open(m_TofInfo) != Result::OK){ 
+    std::cout << "TOF ID " << m_TofInfo.tofid << " Open Error" << endl;
         return -1;
     }
 
@@ -193,7 +101,8 @@ int hlds_agent::InitAgent()
 		cout<<"FRAME ERROR"<<endl;
 		return -1;
 	}
-    //Set camera mode as Depth mode
+    
+	//Set camera mode as Depth mode
     if (m_Tof->SetCameraMode(CameraMode::CameraModeDepth) != Result::OK){
         std::cout << "TOF ID " << m_Tof->tofinfo.tofid << " Set Camera Mode Error" << endl;
         return -1;
@@ -201,7 +110,6 @@ int hlds_agent::InitAgent()
 
     //Set camera pixel
     if (m_Tof->SetCameraPixel(CameraPixel::w320h240) != Result::OK){
-        //  if (tof.SetCameraPixel(CameraPixel::w160h120) != Result::OK){
         std::cout << "TOF ID " << m_Tof->tofinfo.tofid << " Set Camera Pixel Error" << endl;
         return -1;
     }
@@ -226,7 +134,7 @@ int hlds_agent::InitAgent()
 
     //Start human detection
     if (m_Tof->Run(RunMode::HumanDetect) != Result::OK){
-    std::cout << "TOF ID " << m_Tof->tofinfo.tofid << " Run Error" << endl;
+	std::cout << "TOF ID " << m_Tof->tofinfo.tofid << " Run Error" << endl;
         return -1;
     }
     std::cout << "TOF ID " << m_Tof->tofinfo.tofid << " Run OK" << endl;
@@ -237,7 +145,7 @@ int hlds_agent::InitAgent()
     
 	//Initialize background
 	m_back = Mat::zeros(480*2, 640*2, CV_8UC3);
-    return 0;
+	return 0;
 }
 //Catch humans detected by Human Detect function in SDK
 void hlds_agent::CatchHumans(FrameHumans *pframehumans)
@@ -320,15 +228,14 @@ void hlds_agent::CatchHumans(FrameHumans *pframehumans)
 int hlds_agent::CountDirection(float x, float y)
 {
 
-	printf("CountDirection\n");
     //Linear equation from upper left to lower right of count area：y = a1 * x + b1
-    float a1 = (Count.Square.bottom_y - Count.Square.top_y) / (Count.Square.right_x - Count.Square.left_x);
-    float b1 = Count.Square.top_y - a1 * Count.Square.left_x;
+    float a1 = (m_Count.Square.bottom_y - m_Count.Square.top_y) / (m_Count.Square.right_x - m_Count.Square.left_x);
+    float b1 = m_Count.Square.top_y - a1 * m_Count.Square.left_x;
     float y1 = a1 * x + b1;
 
     //Linear equation from lower left to upper right of count area：y = a2 * x + b2
-    float a2 = (Count.Square.bottom_y - Count.Square.top_y) / (Count.Square.left_x - Count.Square.right_x);
-    float b2 = Count.Square.top_y - a2 * Count.Square.right_x;
+    float a2 = (m_Count.Square.bottom_y - m_Count.Square.top_y) / (m_Count.Square.left_x - m_Count.Square.right_x);
+    float b2 = m_Count.Square.top_y - a2 * m_Count.Square.right_x;
     float y2 = a2 * x + b2;
 
     int dir = COUNT_UP;
@@ -351,83 +258,75 @@ int hlds_agent::CountDirection(float x, float y)
 bool hlds_agent::InCountArea(float x, float y)
 {
     bool ret = false;
-	printf("InCountArea\n");
-
-    if ((x >= Count.Square.left_x) && (x <= Count.Square.right_x) &&
-        (y >= Count.Square.top_y) && (y <= Count.Square.bottom_y)){
+    if ((x >= m_Count.Square.left_x) && (x <= m_Count.Square.right_x) &&
+        (y >= m_Count.Square.top_y) && (y <= m_Count.Square.bottom_y)){
         ret = true;
     }
-
     return ret;
 }
 
 
-
 void hlds_agent::CountHumans(void)
 {
-	Count.InArea = 0;
-
+	m_Count.InArea = 0;
 	for (unsigned int ahno = 0; ahno < m_apphumans.size(); ahno++){
 
 		if (InCountArea(m_apphumans[ahno].x, m_apphumans[ahno].y)){
 			//In count area
 			//countup
-			Count.InArea++;
+			m_Count.InArea++;
 
 			if (!InCountArea(m_apphumans[ahno].prex, m_apphumans[ahno].prey)){
 				//It was outside last time(Outside to inside)
 
 				if (m_apphumans[ahno].enterdir != COUNT_NO){
 					//Cancel previous entering count if already counted
-					Count.Enter[m_apphumans[ahno].enterdir]--;
+					m_Count.Enter[m_apphumans[ahno].enterdir]--;
 				}
 
 				//Entering direction
 				int dir = CountDirection(m_apphumans[ahno].prex, m_apphumans[ahno].prey);
 
 				//countup
-				Count.Enter[dir]++;
+				m_Count.Enter[dir]++;
 
 				//Register countup
 				m_apphumans[ahno].enterdir = dir;
-
 			}
 		}
 		else {
 			//In outside of count area
-
 			if (InCountArea(m_apphumans[ahno].prex, m_apphumans[ahno].prey)){
 				//It was inside last time(Inside to outside)
 
 				if (m_apphumans[ahno].exitdir != COUNT_NO){
 					//Cancel previous exiting count if already counted
-					Count.Exit[m_apphumans[ahno].exitdir]--;
+					m_Count.Exit[m_apphumans[ahno].exitdir]--;
 				}
 
 				//Exiting direction
 				int dir = CountDirection(m_apphumans[ahno].x, m_apphumans[ahno].y);
 
 				//countup
-				Count.Exit[dir]++;
+				m_Count.Exit[dir]++;
 
 				//Register countup
 				m_apphumans[ahno].exitdir = dir;
-
 			}
 		}
 	}
 
 	//Total number of human
-	Count.TotalEnter = 0;
-	Count.TotalExit = 0;
+	m_Count.TotalEnter = 0;
+	m_Count.TotalExit = 0;
 	
-	if( Count.TotalEnter != 0)
+	if( m_Count.TotalEnter != 0)
 	{
-		printf("TotalEnter :%d TotalExit:%d\n", Count.TotalEnter, Count.TotalExit);
+		printf("TotalEnter :%d TotalExit:%d\n", m_Count.TotalEnter, m_Count.TotalExit);
 	}
 	for (int dir = 0; dir < 4; dir++){
-		Count.TotalEnter += Count.Enter[dir];
-		Count.TotalExit += Count.Exit[dir];
+		m_Count.TotalEnter += m_Count.Enter[dir];
+		m_Count.TotalExit += m_Count.Exit[dir];
 	}
 }
 
@@ -565,10 +464,10 @@ void hlds_agent::DrawHumans(void)
 void hlds_agent::DrawCount()
 {
  	    //Display count area
-    float x = Count.Square.left_x * m_zoom + m_dx;
-    float y = Count.Square.top_y * m_zoom + m_dy;
-    float lx = Count.Square.right_x * m_zoom + m_dx - x;
-    float ly = Count.Square.bottom_y * m_zoom + m_dy - y;
+    float x = m_Count.Square.left_x * m_zoom + m_dx +100;
+    float y = m_Count.Square.top_y * m_zoom + m_dy +100;
+    float lx = m_Count.Square.right_x * m_zoom + m_dx - x +100;
+    float ly = m_Count.Square.bottom_y * m_zoom + m_dy - y +100;
     cv::rectangle(m_img, cv::Rect((int)x, (int)y, (int)lx, (int)ly), cv::Scalar(255, 255, 255), 2, CV_AA);
 
     string text;
@@ -664,118 +563,205 @@ void hlds_agent::DrawCount()
 */
 }
 
+bool hlds_agent::CompareDeviceInfo(DEVICEINFO data)
+{
+	if(memcmp(&m_deviceinfo,&data,sizeof(DEVICEINFO))== 0)
+	{
+		return true; 
+	}
+	else
+	{
+		return false; 
+	}
+}
+
+void hlds_agent::SetRunFlag(bool flag)
+{
+	m_agent_run_flag = flag;
+}
+
+void hlds_agent::StatusInfo()
+{
+	if(m_agent_run_flag == true) 
+	{
+		m_stream_status = ((agent_broker*)m_arg)->GetStreamStatus();
+
+		if( ((agent_broker*)m_arg)->GetFocusFlag() == true)
+		{
+			float focus_ratio = ((agent_broker*)m_arg)->GetFocusInOut();
+			m_zoom = m_zoom + focus_ratio;
+		}
+
+		if( ((agent_broker*)m_arg)->GetCameraAngleFlag() == true)
+		{
+			CAMERAANGLE recv = ((agent_broker*)m_arg)->GetCameraAngle();
+			memcpy(&m_angle_x,&recv.angle_x,4);
+			memcpy(&m_angle_y,&recv.angle_y,4);
+			memcpy(&m_angle_z,&recv.angle_z,4);
+			memcpy(&m_height,&recv.height,4);
+		}
+
+		if( ((agent_broker*)m_arg)->GetCamMoveFlag() == true)
+		{
+			uint8_t cammove = ((agent_broker*)m_arg)->GetCamMoveStatus();
+			if(cammove == 1)
+			{
+				m_dy -= 100 * m_zoom; //up
+			}
+			else if(cammove == 2)
+			{
+				m_dy += 100 * m_zoom; //down 
+			}
+			else if(cammove ==3)
+			{
+				m_dx -= 100 * m_zoom; // left
+			}
+			else if(cammove == 4)
+			{
+				m_dx += 100 * m_zoom; // right
+			}
+		}
+	}
+}
+
 int hlds_agent::Proc()
 {
-	((agent_broker*)m_arg)->lock_img_set();
+		StatusInfo();
+		long frameno;
+		TimeStamp timestamp;
+		m_Tof->GetFrameStatus(&frameno, &timestamp);
 
-	long frameno;
-	TimeStamp timestamp;
-	m_Tof->GetFrameStatus(&frameno, &timestamp);
-	if (frameno != m_frame.framenumber){
-		//Read a new frame only if frame number is changed(Old data is shown if it is not changed.)
-		//Read a frame of humans data
-		Result ret = Result::OK;
-		ret = m_Tof->ReadFrame(&m_framehumans);
-		if (ret != Result::OK) {
-			std::cout << "read frame error" << endl;
-			return 0;
-		}
+		if (frameno != m_frame.framenumber){
+			//Read a new frame only if frame number is changed(Old data is shown if it is not changed.)
+			//Read a frame of humans data
+			Result ret = Result::OK;
+			ret = m_Tof->ReadFrame(&m_framehumans);
+			if (ret != Result::OK) {
+				std::cout << "read frame error" << endl;
+				return 0;
+			}
 
-		if (m_bBack){
-			m_img = m_back.clone();
-		}
-		else {
-			m_img = Mat::zeros(480 * 2, 640 * 2, CV_8UC3);
-		}
-		//Catch detected humans
-		for (int y = 0; y < m_frame3d.height; y++){
-			for (int x = 0; x < m_frame3d.width; x++){
+			//Read a frame of depth data
+			ret = Result::OK;
+			ret = m_Tof->ReadFrame(&m_frame);
+			if (ret != Result::OK) {
+				std::cout << "read frame error" << endl;
+				return 0;
+			}	
 
-				if ((m_frame.CalculateLength(m_frame.databuf[y * m_frame.width + x]) >= m_framehumans.distance_min) &&
-						(m_frame.CalculateLength(m_frame.databuf[y * m_frame.width + x]) <= m_framehumans.distance_max)){
-					//Valid data(Only data in specific distance for sensor is valid)
+			//3D conversion(with lens correction)
+			m_frame3d.Convert(&m_frame);
 
-					TofPoint point;     //Coordinate after rotation
+			//3D rotation(to top view)
+			m_frame3d.Rotate(m_angle_x, m_angle_y, m_angle_z);
 
-					//Get coordinates after 3D conversion
-					point.x = m_frame3d.frame3d[y * m_frame3d.width + x].x;
-					point.y = m_frame3d.frame3d[y * m_frame3d.width + x].y;
-					point.z = m_frame3d.frame3d[y * m_frame3d.width + x].z;
+			//Initialize Z-buffer
+			memset(m_z_buffer, 0, sizeof(m_z_buffer));
 
-					//Zoom
-					point.x *= m_zoom;
-					point.y *= m_zoom;
+			if (m_bBack){
+				m_img = m_back.clone();
+			}
+			else {
+				m_img = Mat::zeros(480 * 2, 640 * 2, CV_8UC3);
+			}
 
-					//Shift to X/Y direction on display
-					point.x += m_dx;
-					point.y += m_dy;
+			if (m_bSubDisplay){
+				//Initialize sub display
+				m_subdisplay = cv::Mat::zeros(SUB_DISPLAY_HEIGHT, SUB_DISPLAY_WIDTH, CV_8UC3);
+			}
 
-					if ((point.x >= 0) && (point.x < m_img.size().width) &&
-							(point.y >= 0) && (point.y < m_img.size().height)){
+			//Catch detected humans
+			for (int y = 0; y < m_frame3d.height; y++){
+				for (int x = 0; x < m_frame3d.width; x++){
 
-						if ((point.z >= m_framehumans.z_min) && (point.z < m_framehumans.z_max)){
-							//Within range of Z direction
+					if ((m_frame.CalculateLength(m_frame.databuf[y * m_frame.width + x]) >= m_framehumans.distance_min) &&
+							(m_frame.CalculateLength(m_frame.databuf[y * m_frame.width + x]) <= m_framehumans.distance_max)){
+						//Valid data(Only data in specific distance for sensor is valid)
 
-							if ((m_z_buffer[(int)point.x][(int)point.y] == 0) ||
-									(m_z_buffer[(int)point.x][(int)point.y] > point.z)){	
+						TofPoint point;     //Coordinate after rotation
 
-								//Register to Z-buffer
-								m_z_buffer[(int)point.x][(int)point.y] = point.z;
+						//Get coordinates after 3D conversion
+						point.x = m_frame3d.frame3d[y * m_frame3d.width + x].x;
+						point.y = m_frame3d.frame3d[y * m_frame3d.width + x].y;
+						point.z = m_frame3d.frame3d[y * m_frame3d.width + x].z;
 
-								//Register color to display image based on distance of Z direction
-								long color = (long)(65530 * (point.z - m_framehumans.z_min) / ((m_framehumans.z_max - m_framehumans.z_min)));
+						//Zoom
+						point.x *= m_zoom;
+						point.y *= m_zoom;
 
-								cv::Vec3b v;
-								v.val[0] = m_frame.ColorTable[0][color];
-								v.val[1] = m_frame.ColorTable[1][color];
-								v.val[2] = m_frame.ColorTable[2][color];
+						//Shift to X/Y direction on display
+						point.x += m_dx;
+						point.y += m_dy;
 
-								if (m_bPoint){
-									m_img.at<cv::Vec3b>((int)point.y, (int)point.x) = v;
+						if ((point.x >= 0) && (point.x < m_img.size().width) &&
+								(point.y >= 0) && (point.y < m_img.size().height)){
+
+							if ((point.z >= m_framehumans.z_min) && (point.z < m_framehumans.z_max)){
+								//Within range of Z direction
+
+								if ((m_z_buffer[(int)point.x][(int)point.y] == 0) ||
+										(m_z_buffer[(int)point.x][(int)point.y] > point.z)){	
+
+									//Register to Z-buffer
+									m_z_buffer[(int)point.x][(int)point.y] = point.z;
+
+									//Register color to display image based on distance of Z direction
+									long color = (long)(65530 * (point.z - m_framehumans.z_min) / ((m_framehumans.z_max - m_framehumans.z_min)));
+
+									cv::Vec3b v;
+									v.val[0] = m_frame.ColorTable[0][color];
+									v.val[1] = m_frame.ColorTable[1][color];
+									v.val[2] = m_frame.ColorTable[2][color];
+
+									if (m_bPoint){
+										m_img.at<cv::Vec3b>((int)point.y, (int)point.x) = v;
+									}
+								}
+
+								if (m_bSubDisplay){
+									//Sub display
+									cv::Vec3b v;
+									v.val[0] = m_frame.ColorTable[0][m_frame.databuf[y * m_frame.width + x]];
+									v.val[1] = m_frame.ColorTable[1][m_frame.databuf[y * m_frame.width + x]];
+									v.val[2] = m_frame.ColorTable[2][m_frame.databuf[y * m_frame.width + x]];
+									m_subdisplay.at<cv::Vec3b>(y * SUB_DISPLAY_HEIGHT / m_frame3d.height,x * SUB_DISPLAY_WIDTH / m_frame3d.width) = v;
+
 								}
 							}
+						}
+					}
+					else {
+						//Invalid point is (x,y,z) = (0,0,0)
+						m_frame3d.frame3d[y * m_frame3d.width + x].x = 0;
+						m_frame3d.frame3d[y * m_frame3d.width + x].y = 0;
+						m_frame3d.frame3d[y * m_frame3d.width + x].z = 0;
+					}
+				}
+			}
+			CatchHumans(&m_framehumans);
+			//Human count
+			CountHumans();
+			//Draw humans
+			DrawHumans();
 
-                            if (m_bSubDisplay){
-                                //Sub display
-                                /*cv::Vec3b v;
-                                v.val[0] = m_frame.ColorTable[0][m_frame.databuf[y * m_frame.width + x]];
-                                v.val[1] = m_frame.ColorTable[1][m_frame.databuf[y * m_frame.width + x]];
-                                v.val[2] = m_frame.ColorTable[2][m_frame.databuf[y * m_frame.width + x]];
-                                subdisplay.at<cv::Vec3b>(y * SUB_DISPLAY_HEIGHT / m_frame3d.height,x * SUB_DISPLAY_WIDTH / m_frame3d.width) = v;
-                            */
-                            }
-                        }
-                    }
-                }
-                else {
-                    //Invalid point is (x,y,z) = (0,0,0)
-                    m_frame3d.frame3d[y * m_frame3d.width + x].x = 0;
-                    m_frame3d.frame3d[y * m_frame3d.width + x].y = 0;
-                    m_frame3d.frame3d[y * m_frame3d.width + x].z = 0;
-                }
-            }
-        }
-		CatchHumans(&m_framehumans);
+			//Draw human counter
+			if (m_bCount){
+				DrawCount();
+			}
 
-		//Human count
-		CountHumans();
-		//Draw humans
-		DrawHumans();
+			if (m_bSubDisplay){
+				//Sub display
+				cv::Mat roi = m_img(cv::Rect(SUB_DISPLAY_X, SUB_DISPLAY_Y, SUB_DISPLAY_WIDTH, SUB_DISPLAY_HEIGHT));
+				cv::resize(m_subdisplay, roi, roi.size(), cv::INTER_LINEAR);
+			}
 
-		//Draw human counter
-		if (m_bCount){
-			DrawCount();
+			if(m_stream_status == 1)
+			{
+				Mat* hlds_img = new Mat();
+				*hlds_img = m_img.clone();
+				((agent_broker*)m_arg)->UpdateHLDSImage(hlds_img, true);
+			}
 		}
-
-		if(m_stream_status == STREAM_ON) 
-		{
-			Mat* hlds_img = new Mat();
-			*hlds_img = m_img.clone();
-			((agent_broker*)m_arg)->UpdateHLDSImage(hlds_img, false);
-		}
-	
-		  ((agent_broker*)m_arg)->unlock_img_set();
-	}    
-	return 0;
+		return 0;
 }
 
